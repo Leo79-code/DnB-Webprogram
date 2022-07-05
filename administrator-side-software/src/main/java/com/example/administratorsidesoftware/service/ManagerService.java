@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 public class ManagerService extends ServiceImpl <ManagerMapper, Manager>{
     public boolean login(ManagerDTO managerDTO) {
         QueryWrapper<Manager> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("ManagerName", managerDTO.getManagerName());
-        queryWrapper.eq("ManagerPassword", managerDTO.getManagerPassword());
+        queryWrapper.eq("managerName", managerDTO.getManagerName());
+        queryWrapper.eq("managerPassword", managerDTO.getManagerPassword());
         Manager one = getOne(queryWrapper);
         return one != null;
     }

@@ -6,12 +6,13 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 @Data
-@TableName(value = "Manager")
-public class Manager {
-    @TableId(value = "managerID")
+@TableName(value = "Warehouse")
+public class Warehouse {
+    @TableId(value = "warehouseNo")
+    private int warehouseNo;
+    @TableField(value = "warehouseName")
+    private String warehouseName;
+    @TableField(value = "managerId")
     private int managerId;
-    @TableField(value = "managerPassword")
-    private String managerPassword;
-    @TableField(value = "managerName")
-    private String managerName;
 }
+
