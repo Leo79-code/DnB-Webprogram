@@ -3,10 +3,12 @@
     <el-form class="login-container">
       <h1 class="title">Warehouse Manage System</h1>
       <el-form-item label="Account">
-        <el-input size="medium" prefix-icon="el-icon-user" type="password" v-model="user.username" placeholder="Account" autocomplete="off"></el-input>
+        <el-input size="medium" prefix-icon="el-icon-user" type="password" v-model="manager.managerName"
+                  placeholder="Account" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="Password">
-        <el-input size="medium" prefix-icon="el-icon-lock" type="password" show-password v-model="user.password" placeholder="Password" autocomplete="off"></el-input>
+        <el-input size="medium" prefix-icon="el-icon-lock" type="password" show-password
+                  v-model="manager.managerPassword" placeholder="Password" autocomplete="off"></el-input>
       </el-form-item>
 
       <el-form-item>
@@ -21,13 +23,16 @@ export default {
   name: 'login',
   data: function () {
     return {
-    user: {}
+      manager: {
+        managerName: "",
+        managerPassword: "",
+      }
     }
   },
   methods: {
     login() {
-      this.request.post("/user/login", this.user).then(res => {
-        if(!res){
+      this.request.post("/manager/login", this.manager).then(res => {
+        if (!res) {
           this.$message.error("Sorry, your account and password did not match.")
         } else {
           this.$router.push("/manage")
