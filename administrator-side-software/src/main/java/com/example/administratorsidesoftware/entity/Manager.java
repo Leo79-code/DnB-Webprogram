@@ -9,7 +9,7 @@ import lombok.Data;
 @TableName(value = "Manager")
 public class Manager {
     @TableId(value = "managerID")
-    private int managerId;
+    private Integer managerId;
     @TableField(value = "managerPassword")
     private String managerPassword;
     @TableField(value = "managerName")

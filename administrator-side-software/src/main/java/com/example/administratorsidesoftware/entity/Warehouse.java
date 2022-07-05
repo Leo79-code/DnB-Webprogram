@@ -9,7 +9,7 @@ import lombok.Data;
 @TableName(value = "Warehouse")
 public class Warehouse {
     @TableId(value = "warehouseNo")
-    private int warehouseNo;
+    private Integer warehouseNo;
     @TableField(value = "warehouseName")
     private String warehouseName;
     @TableField(value = "managerId")

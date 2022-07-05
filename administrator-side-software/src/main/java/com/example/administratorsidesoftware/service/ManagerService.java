@@ -8,12 +8,11 @@ import com.example.administratorsidesoftware.mapper.ManagerMapper;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ManagerService extends ServiceImpl <ManagerMapper, Manager>{
-    public boolean login(ManagerDTO managerDTO) {
+public class ManagerService extends ServiceImpl<ManagerMapper, Manager> {
+    public Manager login(ManagerDTO managerDTO) {
         QueryWrapper<Manager> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("managerName", managerDTO.getManagerName());
+        queryWrapper.eq("managerId", managerDTO.getManagerId());
         queryWrapper.eq("managerPassword", managerDTO.getManagerPassword());
-        Manager one = getOne(queryWrapper);
-        return one != null;
+        return getOne(queryWrapper);
     }
 }

@@ -9,13 +9,13 @@ import lombok.Data;
 @TableName(value = "Worker")
 public class Worker {
     @TableId(value = "workerId")
-    private int workerId;
+    private Integer workerId;
     @TableField(value = "workerName")
     private String workerName;
     @TableField(value = "workerPassword")
     private String workerPassword;
     @TableField(value = "managerId")
-    private int managerId;
+    private Integer managerId;
     @TableField(value = "warehouseNo")
-    private int warehouseNo;
+    private Integer warehouseNo;
 }

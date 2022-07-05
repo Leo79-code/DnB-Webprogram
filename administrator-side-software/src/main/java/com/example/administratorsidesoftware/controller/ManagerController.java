@@ -1,13 +1,17 @@
 package com.example.administratorsidesoftware.controller;
 
 import cn.hutool.core.util.StrUtil;
+import com.example.administratorsidesoftware.common.Result;
 import com.example.administratorsidesoftware.controller.DTO.ManagerDTO;
 import com.example.administratorsidesoftware.entity.Manager;
 import com.example.administratorsidesoftware.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("manager/")
@@ -17,20 +21,23 @@ public class ManagerController {
 
     /**
      * Login interface, provides login function to front-end
+     *
      * @param managerDTO manager data transfer object
      * @return true if the user is valid, false if the user isn't valid.
      */
     @PostMapping("/login")
-    public boolean login(@RequestBody ManagerDTO managerDTO){
-        String username = managerDTO.getManagerName();
+    public Result login(@RequestBody ManagerDTO managerDTO, HttpSession session) {
+        Integer id = managerDTO.getManagerId();
         String password = managerDTO.getManagerPassword();
-        if(StrUtil.isBlank(username)||StrUtil.isBlank(password)){
-            return false;
+        if (id == null || StrUtil.isBlank(password)) {
+            return Result.error("The input is empty");
         }
-        return managerService.login(managerDTO);
+        Manager login = managerService.login(managerDTO);
+        if (login != null) {
+            session.setAttribute("managerId", login.getManagerId());
+            return Result.success(login);
+        } else {
+            return Result.error("Input error");
+        }
     }
-
-    //列出所有manager
-    @GetMapping("/")
-    public List<Manager>  index() {return managerService.list();}
 }
