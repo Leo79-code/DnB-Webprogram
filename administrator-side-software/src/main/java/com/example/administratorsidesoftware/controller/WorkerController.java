@@ -25,10 +25,10 @@ public class WorkerController {
      * @param warehouseNo The number of the warehouse being queried
      * @return The information contained in the current page that should be displayed
      */
-    @GetMapping("/warehouse/list/page")
+    @GetMapping("/warehouse/{warehouseNo}/list/page")
     public Result listWorkerPageByWarehouse(@RequestParam Integer pageNum,
                                             @RequestParam Integer pageSize,
-                                            @RequestParam Integer warehouseNo) {
+                                            @PathVariable Integer warehouseNo) {
         IPage<Worker> page = new Page<>(pageNum, pageSize);
         QueryWrapper<Worker> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("warehouseNo", warehouseNo);
