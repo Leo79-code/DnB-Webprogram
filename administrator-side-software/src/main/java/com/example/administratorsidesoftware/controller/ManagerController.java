@@ -15,6 +15,11 @@ public class ManagerController {
     @Autowired
     private ManagerService managerService;
 
+    /**
+     * Login interface, provides login function to front-end
+     * @param managerDTO manager data transfer object
+     * @return true if the user is valid, false if the user isn't valid.
+     */
     @PostMapping("/login")
     public boolean login(@RequestBody ManagerDTO managerDTO){
         String username = managerDTO.getManagerName();
@@ -25,6 +30,7 @@ public class ManagerController {
         return managerService.login(managerDTO);
     }
 
+    //列出所有manager
     @GetMapping("/")
     public List<Manager>  index() {return managerService.list();}
 }
