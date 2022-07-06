@@ -13,6 +13,6 @@ public class Warehouse {
     @TableField(value = "warehouseName")
     private String warehouseName;
     @TableField(value = "managerId")
-    private int managerId;
+    private Integer managerId;
 }
 

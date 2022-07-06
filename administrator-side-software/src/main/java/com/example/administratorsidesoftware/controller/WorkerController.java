@@ -63,7 +63,8 @@ public class WorkerController {
      * @return
      */
     @PostMapping("/change")
-    public Result saveOrUpdateWorker(@RequestBody WorkerDTO workerDTO) {
+    public Result saveOrUpdateWorker(@RequestBody WorkerDTO workerDTO, HttpSession session) {
+        workerDTO.setManagerId((int)session.getAttribute("managerId"));
         boolean result = workerService.saveOrUpdateWorker(workerDTO);
         if (result) {
             return Result.success(true);

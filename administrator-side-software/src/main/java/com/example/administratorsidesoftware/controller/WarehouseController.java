@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.administratorsidesoftware.common.Result;
+import com.example.administratorsidesoftware.controller.DTO.WarehouseDTO;
 import com.example.administratorsidesoftware.entity.Warehouse;
 import com.example.administratorsidesoftware.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,9 @@ public class WarehouseController {
      * @return true if the operation is successfully done.
      */
     @PostMapping("/change")
-    public Result saveOrUpdateWarehouse(@RequestBody Warehouse warehouse) {
-        boolean result = warehouseService.saveOrUpdate(warehouse);
+    public Result saveOrUpdateWarehouse(@RequestBody WarehouseDTO warehouseDTO, HttpSession session) {
+        warehouseDTO.setManagerId((int)session.getAttribute("managerId"));
+        boolean result = warehouseService.saveOrUpdateWarehouse(warehouseDTO);
         if (result) {
             return Result.success(true);
         } else {
