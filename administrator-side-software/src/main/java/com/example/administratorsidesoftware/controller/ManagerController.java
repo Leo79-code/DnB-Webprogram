@@ -6,10 +6,7 @@ import com.example.administratorsidesoftware.controller.DTO.ManagerDTO;
 import com.example.administratorsidesoftware.entity.Manager;
 import com.example.administratorsidesoftware.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -39,5 +36,17 @@ public class ManagerController {
         } else {
             return Result.error("Input error");
         }
+    }
+
+    //Session test
+    @GetMapping("/")
+    public String setSession(HttpSession session){
+        session.setAttribute("session","my session");
+        return "set session";
+    }
+
+    @GetMapping("/session")
+    public String getSession(HttpSession session){
+        return (String) session.getAttribute("session");
     }
 }
