@@ -22,7 +22,7 @@ const routes = [
       {
         path: 'warehouseman',
         name: 'WarehouseMan',
-        component: () => import('../components/WarehouseMan.vue')
+        component: () => import('../views/WarehouseMan.vue')
       },
       {
         path: 'workerman',

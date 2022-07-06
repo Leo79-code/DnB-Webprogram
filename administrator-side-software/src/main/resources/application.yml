@@ -4,6 +4,7 @@ spring:
     url: jdbc:mysql://47.113.188.128:3306/warehousemanagementdb
     username: root
     password: Bupt2022
+
 mybatis:
   mapper-locations: classpath:mapper/*.xml
 mybatis-plus:
