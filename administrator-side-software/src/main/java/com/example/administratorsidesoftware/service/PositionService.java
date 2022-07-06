@@ -1,13 +1,8 @@
 package com.example.administratorsidesoftware.service;
 
-import cn.hutool.core.bean.BeanUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.administratorsidesoftware.controller.DTO.GoodsDTO;
-import com.example.administratorsidesoftware.controller.DTO.ManagerDTO;
-import com.example.administratorsidesoftware.controller.DTO.PositionDTO;
 import com.example.administratorsidesoftware.entity.Goods;
-import com.example.administratorsidesoftware.entity.Manager;
 import com.example.administratorsidesoftware.entity.Position;
 import com.example.administratorsidesoftware.mapper.GoodsMapper;
 import com.example.administratorsidesoftware.mapper.PositionMapper;
@@ -23,17 +18,18 @@ public class PositionService extends ServiceImpl<PositionMapper, Position> {
     private GoodsMapper goodsMapper;
 
 
-    public boolean putin(GoodsDTO goodsDTO){
+    public boolean putin(GoodsDTO goodsDTO) {
         //goodsDTO中position是要放入的地方
         Position position = positionMapper.selectById(goodsDTO.getPositionNo());
         //要放入的地方
-        if(position.isAvailable()){
+        if (position.isAvailable()) {
             position.setAvailable(false);
             return updateById(position);
-        }else {
+        } else {
             return false;
         }
     }
+
     public boolean takeout(GoodsDTO goodsDTO) {
         //goodsDTO中positionNo是要放入的地方
         Goods goods = goodsMapper.selectById(goodsDTO.getGoodsId());
@@ -43,7 +39,7 @@ public class PositionService extends ServiceImpl<PositionMapper, Position> {
             //拿出的位置
             position.setAvailable(true);
             return updateById(position);
-        }else {
+        } else {
             return false;
         }
     }

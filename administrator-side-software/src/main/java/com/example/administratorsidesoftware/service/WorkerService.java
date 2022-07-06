@@ -14,6 +14,7 @@ public class WorkerService extends ServiceImpl<WorkerMapper, Worker> {
     public boolean saveOrUpdateWorker(WorkerDTO workerDTO) {
         Worker worker = new Worker();
         BeanUtil.copyProperties(workerDTO, worker);
+        worker.setEmployed(true);
         return saveOrUpdate(worker);
     }
 

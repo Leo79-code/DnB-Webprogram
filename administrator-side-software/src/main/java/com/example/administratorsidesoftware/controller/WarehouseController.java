@@ -27,9 +27,9 @@ public class WarehouseController {
     @PostMapping("/change")
     public Result saveOrUpdateWarehouse(@RequestBody Warehouse warehouse) {
         boolean result = warehouseService.saveOrUpdate(warehouse);
-        if(result){
+        if (result) {
             return Result.success(true);
-        }else {
+        } else {
             return Result.error("user error", false);
         }
     }
@@ -43,10 +43,10 @@ public class WarehouseController {
     @DeleteMapping("/{warehouseNo}")
     public Result delete(@PathVariable Integer warehouseNo) {
         boolean result = warehouseService.removeById(warehouseNo);
-        if(result){
+        if (result) {
             return Result.success(true);
-        }else {
-            return Result.error("user error",false);
+        } else {
+            return Result.error("user error", false);
         }
     }
 
@@ -60,11 +60,31 @@ public class WarehouseController {
      */
     @GetMapping("/manager/list/page")
     public Result listWarehousePageByManager(@RequestParam Integer pageNum,
-                                          @RequestParam Integer pageSize,
-                                          HttpSession session) {
+                                             @RequestParam Integer pageSize,
+                                             HttpSession session) {
         IPage<Warehouse> page = new Page<>(pageNum, pageSize);
         QueryWrapper<Warehouse> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("managerId", session.getAttribute("managerId"));
         return Result.success(warehouseService.page(page, queryWrapper));
+    }
+
+    @GetMapping("/find/page")
+    public Result findWarehousePage(@RequestParam Integer pageNum,
+                                    @RequestParam Integer pageSize,
+                                    @RequestParam(defaultValue = "") String warehouseName,
+                                    @RequestParam Integer warehouseId,
+                                    HttpSession session) {
+        IPage<Warehouse> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<Warehouse> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("managerId", session.getAttribute("managerId"));
+        if (warehouseId != null) {
+            queryWrapper.eq("warehouseId",warehouseId);
+            return Result.success(warehouseService.page(page,queryWrapper));
+        } else if (!"".equals(warehouseName)) {
+            queryWrapper.like("warehouseName", warehouseName);
+            return Result.success(warehouseService.page(page, queryWrapper));
+        } else {
+            return Result.error("empty input");
+        }
     }
 }

@@ -7,9 +7,12 @@ import com.example.administratorsidesoftware.common.GoodsType;
 import com.example.administratorsidesoftware.common.Result;
 import com.example.administratorsidesoftware.controller.DTO.GoodsDTO;
 import com.example.administratorsidesoftware.entity.Goods;
+import com.example.administratorsidesoftware.entity.Warehouse;
 import com.example.administratorsidesoftware.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("goods/")
@@ -78,17 +81,6 @@ public class GoodsController {
         return Result.success(goodsService.page(page,queryWrapper));
     }
 
-    @GetMapping("/type/list/page")
-    public Result listGoodsPageByType(@RequestParam Integer pageNum,
-                                      @RequestParam Integer pageSize,
-                                      @RequestParam GoodsType type) {
-        IPage<Goods> page = new Page<>(pageNum, pageSize);
-        QueryWrapper<Goods> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("color", type);
-        queryWrapper.eq("available",true);
-        return Result.success(goodsService.page(page,queryWrapper));
-    }
-
     @PostMapping("/add")
     public Result addGoods(@RequestBody GoodsDTO goodsDTO){
         boolean result = goodsService.addGoods(goodsDTO);
@@ -98,4 +90,26 @@ public class GoodsController {
             return Result.error("user error",false);
         }
     }
+
+
+//    @GetMapping("/find/page")
+//    public Result findGoodsPage(@RequestParam Integer pageNum,
+//                                    @RequestParam Integer pageSize,
+//                                    @RequestParam GoodsType Color,
+//                                    @RequestParam Integer goodsId,
+//                                    HttpSession session) {
+//        IPage<Goods> page = new Page<>(pageNum, pageSize);
+//        QueryWrapper<Warehouse> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.eq("managerId", session.getAttribute("managerId"));
+//
+//        if (goodsId != null) {
+//            queryWrapper.eq("warehouseId", goodsId);
+//            return Result.success(warehouseService.page(page,queryWrapper));
+//        } else if (!"".equals(Color)) {
+//            queryWrapper.like("warehouseName", Color);
+//            return Result.success(warehouseService.page(page, queryWrapper));
+//        } else {
+//            return Result.error("empty input");
+//        }
+//    }
 }

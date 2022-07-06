@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.sql.ResultSet;
 
 @RestController
 @RequestMapping("worker/")
@@ -34,7 +33,7 @@ public class WorkerController {
         IPage<Worker> page = new Page<>(pageNum, pageSize);
         QueryWrapper<Worker> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("warehouseNo", warehouseNo);
-        queryWrapper.eq("isEmployed",true);
+        queryWrapper.eq("isEmployed", true);
         return Result.success(workerService.page(page, queryWrapper));
     }
 
@@ -53,7 +52,7 @@ public class WorkerController {
         IPage<Worker> page = new Page<>(pageNum, pageSize);
         QueryWrapper<Worker> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("managerId", session.getAttribute("managerId"));
-        queryWrapper.eq("isEmployed",true);
+        queryWrapper.eq("isEmployed", true);
         return Result.success(workerService.page(page, queryWrapper));
     }
 
@@ -66,25 +65,47 @@ public class WorkerController {
     @PostMapping("/change")
     public Result saveOrUpdateWorker(@RequestBody WorkerDTO workerDTO) {
         boolean result = workerService.saveOrUpdateWorker(workerDTO);
-        if(result){
+        if (result) {
             return Result.success(true);
-        }else {
-            return Result.error("user error",false);
+        } else {
+            return Result.error("user error", false);
         }
     }
 
     /**
      * 通过id删除worker，将isEmplyed置为false
+     *
      * @param id 要删除的worker的id
      * @return 成功返回success状态，失败返回business_error状态
      */
     @DeleteMapping("/{id}")
-    public Result deleteWorker(@PathVariable Integer id){
+    public Result deleteWorker(@PathVariable Integer id) {
         boolean result = workerService.deleteWorkerById(id);
-        if(result){
+        if (result) {
             return Result.success();
-        }else {
+        } else {
             return Result.error();
+        }
+    }
+
+    @GetMapping("/find/page")
+    public Result findWorkerPage(@RequestParam Integer pageNum,
+                                 @RequestParam Integer pageSize,
+                                 @RequestParam(defaultValue = "") String workerName,
+                                 @RequestParam Integer workerId,
+                                 HttpSession session) {
+        IPage<Worker> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<Worker> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("managerId",session.getAttribute("managerId"));
+        queryWrapper.eq("isEmployed",true);
+        if(workerId != null){
+            queryWrapper.eq("workerId",workerId);
+            return Result.success(workerService.page(page,queryWrapper));
+        }else if(!"".equals(workerName)){
+            queryWrapper.like("workerName",workerName);
+            return Result.success(workerService.page(page,queryWrapper));
+        }else {
+            return Result.error("empty input");
         }
     }
 }
