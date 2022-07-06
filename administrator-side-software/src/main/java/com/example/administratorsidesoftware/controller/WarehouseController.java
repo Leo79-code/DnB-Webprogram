@@ -5,13 +5,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.administratorsidesoftware.common.Result;
 import com.example.administratorsidesoftware.entity.Warehouse;
-import com.example.administratorsidesoftware.entity.Worker;
 import com.example.administratorsidesoftware.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.sql.ResultSet;
 
 
 @RestController
@@ -28,7 +26,7 @@ public class WarehouseController {
      */
     @PostMapping("/change")
     public Result saveOrUpdateWarehouse(@RequestBody Warehouse warehouse) {
-        return Result.success(warehouseService.saveOrUpdateWarehouse(warehouse));
+        return Result.success(warehouseService.saveOrUpdate(warehouse));
     }
 
     /**

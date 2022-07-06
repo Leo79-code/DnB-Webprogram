@@ -7,8 +7,4 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class WarehouseService extends ServiceImpl<WarehouseMapper, Warehouse> {
-    public boolean saveOrUpdateWarehouse(Warehouse warehouse) {
-        //TODO  不输入managerId和warehouseNo情况下按原始值更新仓库
-        return false;
-    }
 }
