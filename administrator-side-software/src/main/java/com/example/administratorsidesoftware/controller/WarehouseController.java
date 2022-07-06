@@ -57,6 +57,4 @@ public class WarehouseController {
         queryWrapper.eq("managerId", session.getAttribute("managerId"));
         return Result.success(warehouseService.page(page, queryWrapper));
     }
-
-
 }
