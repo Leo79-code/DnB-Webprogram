@@ -6,17 +6,38 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/',
+    redirect: "/login"
+  },
+  {
     path: '/login',
     name: 'Login',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue')
+    component: () => import('../views/Login.vue'),
   },
   {
     path: '/manage',
     name: 'Manage',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/Manage.vue')
+    component: () => import('../views/Manage.vue'),
+    children: [
+      {
+        path: 'warehouseman',
+        name: 'WarehouseMan',
+        component: () => import('../components/WarehouseMan.vue')
+      },
+      {
+        path: 'workerman',
+        name: 'WorkerMan',
+        component: () => import('../views/WorkerMan.vue')
+      },      {
+        path: 'warehouseinf',
+        name: 'WarehouseInf',
+        component: () => import('../views/WarehouseInf.vue')
+      },      {
+        path: 'goodsinf',
+        name: 'GoodsInf',
+        component: () => import('../views/GoodsInf.vue')
+      },
+    ]
   }
 ]
 

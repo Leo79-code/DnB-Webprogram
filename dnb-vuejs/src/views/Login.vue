@@ -3,7 +3,7 @@
     <el-form class="login-container">
       <h1 class="title">Warehouse Manage System</h1>
       <el-form-item label="Account">
-        <el-input size="medium" prefix-icon="el-icon-user" type="password" v-model="manager.managerName"
+        <el-input size="medium" prefix-icon="el-icon-user" v-model="manager.managerName"
                   placeholder="Account" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="Password">
