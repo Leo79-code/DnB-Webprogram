@@ -7,6 +7,4 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class WarehouseService extends ServiceImpl<WarehouseMapper, Warehouse> {
-    public boolean saveOrUpdateWarehouse(Warehouse warehouse) {
-    }
 }
