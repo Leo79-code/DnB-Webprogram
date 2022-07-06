@@ -12,8 +12,10 @@ import lombok.Data;
 public class Goods {
     @TableId(value = "goodsId")
     private Integer goodsId;
-    @TableField(value = "Color")
+    @TableField(value = "color")
     private GoodsType color;
     @TableField(value = "positionNo")
     private Integer positionNo;
+    @TableField(value = "available")
+    private boolean available;
 }

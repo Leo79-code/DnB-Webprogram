@@ -18,4 +18,6 @@ public class Worker {
     private Integer managerId;
     @TableField(value = "warehouseNo")
     private Integer warehouseNo;
+    @TableField(value = "isEmployed")
+    private boolean isEmployed;
 }

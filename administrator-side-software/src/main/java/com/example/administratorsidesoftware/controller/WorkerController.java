@@ -34,6 +34,7 @@ public class WorkerController {
         IPage<Worker> page = new Page<>(pageNum, pageSize);
         QueryWrapper<Worker> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("warehouseNo", warehouseNo);
+        queryWrapper.eq("isEmployed",true);
         return Result.success(workerService.page(page, queryWrapper));
     }
 
@@ -52,6 +53,7 @@ public class WorkerController {
         IPage<Worker> page = new Page<>(pageNum, pageSize);
         QueryWrapper<Worker> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("managerId", session.getAttribute("managerId"));
+        queryWrapper.eq("isEmployed",true);
         return Result.success(workerService.page(page, queryWrapper));
     }
 
@@ -59,7 +61,7 @@ public class WorkerController {
      * Change the state of the worker or add worker.
      *
      * @param workerDTO worker data transfer object. 禁止manager更改worker password
-     * @return true if the operation is successfully done.
+     * @return
      */
     @PostMapping("/change")
     public Result saveOrUpdateWorker(@RequestBody WorkerDTO workerDTO) {
@@ -68,6 +70,21 @@ public class WorkerController {
             return Result.success(true);
         }else {
             return Result.error("user error",false);
+        }
+    }
+
+    /**
+     * 通过id删除worker，将isEmplyed置为false
+     * @param id 要删除的worker的id
+     * @return 成功返回success状态，失败返回business_error状态
+     */
+    @DeleteMapping("/{id}")
+    public Result deleteWorker(@PathVariable Integer id){
+        boolean result = workerService.deleteWorkerById(id);
+        if(result){
+            return Result.success();
+        }else {
+            return Result.error();
         }
     }
 }
