@@ -61,7 +61,7 @@ public class WorkerController {
      */
     @PostMapping("/change")
     public Result saveOrUpdateWorker(@RequestBody Worker worker) {
-        return Result.success(workerService.saveOrUpdateWorker(worker));
+        return Result.success(workerService.saveOrUpdate(worker));
     }
 
 }
