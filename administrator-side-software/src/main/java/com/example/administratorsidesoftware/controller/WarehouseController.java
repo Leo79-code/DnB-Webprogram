@@ -26,7 +26,12 @@ public class WarehouseController {
      */
     @PostMapping("/change")
     public Result saveOrUpdateWarehouse(@RequestBody Warehouse warehouse) {
-        return Result.success(warehouseService.saveOrUpdate(warehouse));
+        boolean result = warehouseService.saveOrUpdate(warehouse);
+        if(result){
+            return Result.success(true);
+        }else {
+            return Result.error("user error", false);
+        }
     }
 
     /**
@@ -37,7 +42,12 @@ public class WarehouseController {
      */
     @DeleteMapping("/{warehouseNo}")
     public Result delete(@PathVariable Integer warehouseNo) {
-        return Result.success(warehouseService.removeById(warehouseNo));
+        boolean result = warehouseService.removeById(warehouseNo);
+        if(result){
+            return Result.success(true);
+        }else {
+            return Result.error("user error",false);
+        }
     }
 
     /**

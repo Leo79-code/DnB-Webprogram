@@ -27,6 +27,10 @@ public class Result {
         return new Result(State.USER_ERROR,msg,null);
     }
     public static Result error(){
-        return new Result(State.BUSINESS_ERROR,"",null);
+        return new Result(State.BUSINESS_ERROR,"System error",null);
+    }
+
+    public static Result error(String msg, Object data) {
+        return new Result(State.USER_ERROR, msg, data);
     }
 }

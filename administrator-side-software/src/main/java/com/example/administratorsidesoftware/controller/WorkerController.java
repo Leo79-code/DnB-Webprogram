@@ -4,12 +4,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.administratorsidesoftware.common.Result;
+import com.example.administratorsidesoftware.controller.DTO.WorkerDTO;
 import com.example.administratorsidesoftware.entity.Worker;
 import com.example.administratorsidesoftware.service.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.sql.ResultSet;
 
 @RestController
 @RequestMapping("worker/")
@@ -56,12 +58,16 @@ public class WorkerController {
     /**
      * Change the state of the worker or add worker.
      *
-     * @param worker worker should be changed or created.
+     * @param workerDTO worker data transfer object. 禁止manager更改worker password
      * @return true if the operation is successfully done.
      */
     @PostMapping("/change")
-    public Result saveOrUpdateWorker(@RequestBody Worker worker) {
-        return Result.success(workerService.saveOrUpdate(worker));
+    public Result saveOrUpdateWorker(@RequestBody WorkerDTO workerDTO) {
+        boolean result = workerService.saveOrUpdateWorker(workerDTO);
+        if(result){
+            return Result.success(true);
+        }else {
+            return Result.error("user error",false);
+        }
     }
-
 }
