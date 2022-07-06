@@ -49,7 +49,7 @@ public class WarehouseController {
      * @return The information contained in the current page that should be displayed
      */
     @GetMapping("/manager/list/page")
-    public Result listWorkerPageByManager(@RequestParam Integer pageNum,
+    public Result listWarehousePageByManager(@RequestParam Integer pageNum,
                                           @RequestParam Integer pageSize,
                                           HttpSession session) {
         IPage<Warehouse> page = new Page<>(pageNum, pageSize);
