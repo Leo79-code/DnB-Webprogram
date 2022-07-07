@@ -3,9 +3,19 @@
     <el-button @click="load()">Load</el-button>
     <el-table
         :data="tableData"
-        height="250"
+        height="550"
         stripe
         style="width: 100%">
+      <el-table-column
+          prop="workerId"
+          label="Worker ID"
+          width="180">
+      </el-table-column>
+      <el-table-column
+          prop="workerName"
+          label="Worker Name"
+          width="180">
+      </el-table-column>
       <el-table-column
           prop="warehouseNo"
           label="Warehouse No"
@@ -16,10 +26,19 @@
           label="Manager ID"
           width="180">
       </el-table-column>
+      <el-table-column label="" width="180">
+        <template slot-scope="scope">
+          <el-button
+              size="mini"
+              type="danger"
+              @click="handleDelete(scope.row.workerId)">Delete
+          </el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <div style="padding: 10px 0">
       <el-pagination
-          :page-sizes="[2, 5, 10, 20]"
+          :page-sizes="[5, 10]"
           :page-size="pageSize"
           :current-page="pageNum"
           @size-change="handleSizeChange"
@@ -42,14 +61,15 @@
           label-width="90px"
           style="width: 600px; margin-left:50px;"
       >
+        <el-form-item label="Worker ID" prop="workerId">
+          <el-input v-model="worker.workerId"/>
+        </el-form-item>
+        <el-form-item label="Worker Name" prop="workerName">
+          <el-input v-model="worker.workerName"/>
+        </el-form-item>
         <el-form-item label="Warehouse No" prop="warehouseNo">
-          <el-input v-model="warehouse.warehouseNo"/>
+          <el-input v-model="worker.warehouseNo"/>
         </el-form-item>
-        <el-form-item label="Manager ID" prop="managerId">
-          <el-input v-model="warehouse.managerId"/>
-        </el-form-item>
-
-
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">Quit</el-button>
@@ -64,14 +84,16 @@
 export default {
   data() {
     return {
-      warehouse: {
+      worker: {
+        workerId: "",
+        workerName: "",
         warehouseNo: "",
         managerId: "",
       },
       tableData: [],
       total: 0,
       pageNum: 1,
-      pageSize: 2,
+      pageSize: 5,
       dialogFormVisible: false,
     };
 
@@ -81,7 +103,8 @@ export default {
       this.load()
     },
     load() {
-      this.request.get("/warehouse/manager/list/page?pageNum=" + this.pageNum + "&pageSize=" + this.pageSize).then(res => {
+      this.request.get("/worker/manager/list/page?pageNum=" + this.pageNum + "&pageSize=" + this.pageSize
+          + "&managerId=" + sessionStorage.getItem("managerId")).then(res => {
         console.log(res)
         this.tableData = res.data.records
         this.total = res.data.total
@@ -98,17 +121,33 @@ export default {
       this.load()
     },
     handleCreate() {
-      this.warehouse = {
+      this.worker = {
+        workerId: "",
+        workerName: "",
         warehouseNo: "",
         managerId: "",
-      };
+      }
       this.dialogFormVisible = true;
+    },
+    handleDelete(workerId) {
+      this.request.delete("/worker/" + workerId).then(res => {
+        if (res.state === "SUCCESS") {
+          this.$message.success("Deleted Successfully!")
+          this.load()
+        } else {
+          this.$message.error("Error")
+          this.load()
+        }
+      })
     },
     //Create Button Confirm
     async createData() {
+      this.worker.managerId = sessionStorage.getItem('managerId')
       this.request.post("/warehouse/change", this.warehouse).then(res => {
         if (res.state === "SUCCESS") {
           this.$message.success("Created Successfully!")
+          this.load()
+          this.dialogFormVisible = false
         } else {
           this.$message.error("Sorry, your input is wrong.")
         }

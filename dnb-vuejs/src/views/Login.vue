@@ -36,7 +36,7 @@ export default {
         if (res.state === "SUCCESS") {
           this.$router.push("/manage")
           // this.$cookie.set('JSESSIONID',res.data)
-          sessionStorage.setItem("JSESSIONID",res.data);
+          sessionStorage.setItem("managerId",res.data.managerId);
         } else {
           this.$message.error("Sorry, your account and password did not match.")
         }
