@@ -143,7 +143,7 @@ export default {
     //Create Button Confirm
     async createData() {
       this.worker.managerId = sessionStorage.getItem('managerId')
-      this.request.post("/warehouse/change", this.warehouse).then(res => {
+      this.request.post("/worker/change", this.worker).then(res => {
         if (res.state === "SUCCESS") {
           this.$message.success("Created Successfully!")
           this.load()
