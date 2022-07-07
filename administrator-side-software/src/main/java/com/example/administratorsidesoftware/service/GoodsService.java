@@ -43,11 +43,11 @@ public class GoodsService extends ServiceImpl<GoodsMapper, Goods> {
         Goods goods1 = goodsMapper.selectById(goodsDTO.getGoodsId());
         Position position = positionMapper.selectById(goods1.getPositionNo());
         if (positionService.takeout(goodsDTO)) {
-            if(positionService.putin(goodsDTO)){
+            if(positionService.putin(goodsDTO, managerId)){
                 return updateById(goods);
             }else {
                 goodsDTO.setPositionNo(position.getPositionNo());
-                positionService.putin(goodsDTO);
+                positionService.putin(goodsDTO,managerId);
                 return false;
             }
         } else {

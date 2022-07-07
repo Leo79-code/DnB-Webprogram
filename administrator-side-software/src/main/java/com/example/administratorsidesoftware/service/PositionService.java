@@ -18,11 +18,11 @@ public class PositionService extends ServiceImpl<PositionMapper, Position> {
     private GoodsMapper goodsMapper;
 
 
-    public boolean putin(GoodsDTO goodsDTO) {
+    public boolean putin(GoodsDTO goodsDTO, Integer managerId) {
         //goodsDTO中position是要放入的地方
         Position position = positionMapper.selectById(goodsDTO.getPositionNo());
         //要放入的地方
-        if (position.isAvailable()) {
+        if (position.isAvailable() &&(goodsMapper.isGoodsManager(goodsDTO, managerId) != null)) {
             position.setAvailable(false);
             return updateById(position);
         } else {

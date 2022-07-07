@@ -25,7 +25,7 @@ public class ManagerController {
      * @return true if the user is valid, false if the user isn't valid.
      */
     @PostMapping("/login")
-    public Result login(@RequestBody ManagerDTO managerDTO, HttpServletRequest res) {
+    public Result login(@RequestBody ManagerDTO managerDTO) {
         Integer id = managerDTO.getManagerId();
         String password = managerDTO.getManagerPassword();
         if (id == null || StrUtil.isBlank(password)) {
@@ -33,8 +33,8 @@ public class ManagerController {
         }
         Manager login = managerService.login(managerDTO);
         if (login != null) {
-            res.getSession().setAttribute("managerId", login.getManagerId());
-            return Result.success("JSESSIONID="+res.getSession().getId()+"; Path=/; HttpOnly;");
+            //res.getSession().setAttribute("managerId", login.getManagerId());
+            return Result.success(login);
         } else {
             return Result.error("Input error");
         }

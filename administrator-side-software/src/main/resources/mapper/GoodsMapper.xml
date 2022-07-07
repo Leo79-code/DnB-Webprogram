@@ -20,4 +20,10 @@
         </if>
         </where>
     </select>
+    <select id="getGoodsManager" resultType="com.example.administratorsidesoftware.entity.Goods">
+        select *
+        from goods,position,warehouse,manager
+        where   goods.positionNo = position.positionNo and position.warehouseNo = warehouse.warehouseNo
+                       and warehouse.managerId = #{managerId} and goods.available = true and goods.goodsId = #{goodsDTO.getGoodsId}
+    </select>
 </mapper>

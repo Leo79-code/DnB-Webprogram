@@ -58,16 +58,16 @@ public class WarehouseController {
      *
      * @param pageNum  The sequence number of the page displayed
      * @param pageSize Maximum number of items that can be displayed per page
-     * @param res  session information
+     * @param managerId  session information
      * @return The information contained in the current page that should be displayed
      */
     @GetMapping("/manager/list/page")
     public Result listWarehousePageByManager(@RequestParam Integer pageNum,
                                              @RequestParam Integer pageSize,
-                                             @RequestParam HttpServletRequest res) {
+                                             @RequestParam Integer managerId) {
         IPage<Warehouse> page = new Page<>(pageNum, pageSize);
         QueryWrapper<Warehouse> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("managerId", res.getSession().getAttribute("managerId"));
+        queryWrapper.eq("managerId", managerId);
         return Result.success(warehouseService.page(page, queryWrapper));
     }
 
