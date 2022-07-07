@@ -81,15 +81,15 @@ public class GoodsController {
         return Result.success(goodsService.findGoodsPageByWarehouse(page,warehouseNo));
     }
 
-    @PostMapping("/add")
-    public Result addGoods(@RequestBody GoodsDTO goodsDTO){
-        boolean result = goodsService.addGoods(goodsDTO);
-        if(result){
-            return Result.success(true);
-        }else {
-            return Result.error("user error",false);
-        }
-    }
+//    @PostMapping("/add")
+//    public Result addGoods(@RequestBody GoodsDTO goodsDTO){
+//        boolean result = goodsService.addGoods(goodsDTO);
+//        if(result){
+//            return Result.success(true);
+//        }else {
+//            return Result.error("user error",false);
+//        }
+//    }
 
     /**
      * 通过color/goodsId分页查找货物，只能显示该manager管理的

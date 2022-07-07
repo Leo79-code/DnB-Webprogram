@@ -66,16 +66,16 @@ public class GoodsService extends ServiceImpl<GoodsMapper, Goods> {
         }
     }
 
-    public boolean addGoods(GoodsDTO goodsDTO) {
-        if(positionService.putin(goodsDTO)){
-            Goods goods = new Goods();
-            BeanUtil.copyProperties(goodsDTO,goods);
-            goods.setAvailable(true);
-            return goodsMapper.insert(goods)==1;
-        }else {
-            return false;
-        }
-    }
+//    public boolean addGoods(GoodsDTO goodsDTO) {
+//        if(positionService.putin(goodsDTO)){
+//            Goods goods = new Goods();
+//            BeanUtil.copyProperties(goodsDTO,goods);
+//            goods.setAvailable(true);
+//            return goodsMapper.insert(goods)==1;
+//        }else {
+//            return false;
+//        }
+//    }
 
     public IPage<Goods> findGoodsPageByWarehouse(IPage<Goods> page, Integer warehouseNo) {
         return goodsMapper.findGoodsPageByWarehouse(page,warehouseNo);
