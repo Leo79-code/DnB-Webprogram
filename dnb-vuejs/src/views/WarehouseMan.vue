@@ -3,12 +3,17 @@
     <el-button @click="load()">Load</el-button>
     <el-table
         :data="tableData"
-        height="250"
+        height="550"
         stripe
         style="width: 100%">
       <el-table-column
           prop="warehouseNo"
           label="Warehouse No"
+          width="180">
+      </el-table-column>
+      <el-table-column
+          prop="warehouseName"
+          label="Warehouse Name"
           width="180">
       </el-table-column>
       <el-table-column
@@ -19,7 +24,7 @@
     </el-table>
     <div style="padding: 10px 0">
       <el-pagination
-          :page-sizes="[2, 5, 10, 20]"
+          :page-sizes="[5, 10]"
           :page-size="pageSize"
           :current-page="pageNum"
           @size-change="handleSizeChange"
@@ -45,11 +50,9 @@
         <el-form-item label="Warehouse No" prop="warehouseNo">
           <el-input v-model="warehouse.warehouseNo"/>
         </el-form-item>
-        <el-form-item label="Manager ID" prop="managerId">
-          <el-input v-model="warehouse.managerId"/>
+        <el-form-item label="Warehouse Name" prop="managerName">
+          <el-input v-model="warehouse.warehouseName"/>
         </el-form-item>
-
-
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">Quit</el-button>
@@ -67,11 +70,12 @@ export default {
       warehouse: {
         warehouseNo: "",
         managerId: "",
+        warehouseName: "",
       },
       tableData: [],
       total: 0,
       pageNum: 1,
-      pageSize: 2,
+      pageSize: 5,
       dialogFormVisible: false,
     };
 
@@ -82,8 +86,8 @@ export default {
     },
     load() {
       this.request.get("/warehouse/manager/list/page?pageNum=" + this.pageNum + "&pageSize=" + this.pageSize
-          + "&res=" + sessionStorage.getItem("JSESSIONID")).then(res => {
-        console.log(res)
+          + "&managerId=" + sessionStorage.getItem("managerId")).then(res => {
+        // console.log(res)
         this.tableData = res.data.records
         this.total = res.data.total
       })
@@ -107,9 +111,12 @@ export default {
     },
     //Create Button Confirm
     async createData() {
+      this.warehouse.managerId = sessionStorage.getItem('managerId')
       this.request.post("/warehouse/change", this.warehouse).then(res => {
         if (res.state === "SUCCESS") {
           this.$message.success("Created Successfully!")
+          this.load()
+          this.dialogFormVisible = false
         } else {
           this.$message.error("Sorry, your input is wrong.")
         }
