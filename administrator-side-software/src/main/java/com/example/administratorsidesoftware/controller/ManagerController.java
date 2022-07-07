@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.net.HttpCookie;
 
 @RestController
 @RequestMapping("manager/")
@@ -33,21 +34,21 @@ public class ManagerController {
         Manager login = managerService.login(managerDTO);
         if (login != null) {
             res.getSession().setAttribute("managerId", login.getManagerId());
-            return Result.success(login);
+            return Result.success(res.getSession().getId());
         } else {
             return Result.error("Input error");
         }
     }
 
     //Session test
-    @GetMapping("/")
-    public String setSession(HttpServletRequest res) {
-        res.getSession().setAttribute("session", "my1 session");
-        return "set session";
-    }
-
-    @GetMapping("/session")
-    public String getSession(HttpServletRequest res) {
-        return (String) res.getSession().getAttribute("session");
-    }
+//    @GetMapping("/")
+//    public String setSession(HttpCookie cookie) {
+//        cookie.setValue("");
+//        return "set session";
+//    }
+//
+//    @GetMapping("/session")
+//    public String getSession(HttpServletRequest res) {
+//        return (String) res.getSession().getAttribute("session");
+//    }
 }
