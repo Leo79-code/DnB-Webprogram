@@ -7,8 +7,11 @@ import com.example.administratorsidesoftware.common.Result;
 import com.example.administratorsidesoftware.controller.DTO.GoodsDTO;
 import com.example.administratorsidesoftware.entity.Goods;
 import com.example.administratorsidesoftware.service.GoodsService;
+import com.example.administratorsidesoftware.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("goods/")
@@ -16,6 +19,8 @@ public class GoodsController {
 
     @Autowired
     private GoodsService goodsService;
+    @Resource
+    private RecordService recordService;
 
     /**
      * 通过id删除goods，将available置为false
@@ -36,12 +41,12 @@ public class GoodsController {
     /**
      * 只改变goods位置, 会同步更新position
      *
-     * @param goodsDTO goods data transfer object
+     * @param goodsDTO goods data transfer object goodsId, 更改到的位置，操作的managerId
      * @return 更改成功返回success，失败返回user_error
      */
     @PostMapping("/change/position")
     public Result updateGoodsPosition(@RequestBody GoodsDTO goodsDTO) {
-        boolean result = goodsService.updatePosition(goodsDTO, goodsDTO.getManagerId());
+        boolean result = goodsService.updatePosition(goodsDTO);
         if (result) {
             return Result.success(true);
         } else {
@@ -82,13 +87,18 @@ public class GoodsController {
         return Result.success(goodsService.findGoodsPageByWarehouse(page, warehouseNo));
     }
 
+    /**
+     * 新增goods
+     * @param goodsDTO 需要传入color, positionNo,goodsId, managerId（验证是有否存入该position权限）
+     * @return
+     */
     @PostMapping("/add")
     public Result addGoods(@RequestBody GoodsDTO goodsDTO){
         boolean result = goodsService.addGoods(goodsDTO);
         if(result){
             return Result.success(true);
         }else {
-            return Result.error("user error",false);
+            return Result.error();
         }
     }
 
@@ -100,7 +110,7 @@ public class GoodsController {
      * @param pageSize 页容量
      * @param color    种类，可不输入
      * @param goodsId  可不输入，若输入则为精确查找
-     * @param managerId
+     * @param managerId 权限检验，必须输入
      * @return 无论查找出来几项都会返回success
      */
     @GetMapping("/find/page")

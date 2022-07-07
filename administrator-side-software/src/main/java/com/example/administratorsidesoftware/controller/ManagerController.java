@@ -6,11 +6,13 @@ import com.example.administratorsidesoftware.controller.DTO.ManagerDTO;
 import com.example.administratorsidesoftware.entity.Manager;
 import com.example.administratorsidesoftware.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.net.HttpCookie;
+import java.sql.ResultSet;
+
 
 @RestController
 @RequestMapping("manager/")
@@ -36,6 +38,31 @@ public class ManagerController {
             return Result.success(login);
         } else {
             return Result.error("Input error");
+        }
+    }
+
+    /**
+     * 修改manager信息（逻辑上不能改managerId，前端将默认Id传进DTO中）
+     * @param managerDTO 需要更改的信息+managerId
+     * @return 成功返回SUCCESS，失败返回BUSINESS_ERROR
+     */
+    @PostMapping("/change")
+    public Result change(@RequestBody ManagerDTO managerDTO) {
+        boolean result = managerService.updateManagerById(managerDTO);
+        if(result){
+            return Result.success();
+        }else {
+            return Result.error();
+        }
+    }
+
+    @PostMapping("/regist")
+    public Result regist(@RequestBody ManagerDTO managerDTO){
+        boolean result = managerService.managerRegist(managerDTO);
+        if(result){
+            return Result.success();
+        }else {
+            return Result.error();
         }
     }
 }

@@ -10,8 +10,6 @@ import com.example.administratorsidesoftware.service.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
-
 @RestController
 @RequestMapping("worker/")
 public class WorkerController {

@@ -10,8 +10,6 @@ import com.example.administratorsidesoftware.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 
 @RestController
@@ -23,7 +21,8 @@ public class WarehouseController {
     /**
      * if there is a warehouse with the same warehouseId, update it; if there isn't, create it.
      *
-     * @param warehouseDTO the warehouse should be updated or want to create.
+     * @param warehouseDTO the warehouse should be updated or want to create
+     *                     warehouseId 可以不输入，会自增，输入managerId + warehouseName
      * @return true if the operation is successfully done.
      */
     @PostMapping("/change")
@@ -44,7 +43,7 @@ public class WarehouseController {
      */
     @DeleteMapping("/{warehouseNo}")
     public Result delete(@PathVariable Integer warehouseNo) {
-        boolean result = warehouseService.removeById(warehouseNo);
+        boolean result = warehouseService.removeWarehouse(warehouseNo);
         if (result) {
             return Result.success(true);
         } else {

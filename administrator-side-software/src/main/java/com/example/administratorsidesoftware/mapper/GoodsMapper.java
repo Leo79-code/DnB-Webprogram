@@ -3,9 +3,8 @@ package com.example.administratorsidesoftware.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.administratorsidesoftware.common.GoodsType;
-import com.example.administratorsidesoftware.controller.DTO.GoodsDTO;
+
 import com.example.administratorsidesoftware.entity.Goods;
-import org.apache.ibatis.annotations.Mapper;
 
 
 

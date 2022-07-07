@@ -7,21 +7,21 @@ import com.example.administratorsidesoftware.common.GoodsType;
 import com.example.administratorsidesoftware.controller.DTO.GoodsDTO;
 import com.example.administratorsidesoftware.entity.Goods;
 import com.example.administratorsidesoftware.entity.Position;
-import com.example.administratorsidesoftware.entity.Warehouse;
 import com.example.administratorsidesoftware.mapper.GoodsMapper;
 import com.example.administratorsidesoftware.mapper.PositionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 
 
 @Service
 public class GoodsService extends ServiceImpl<GoodsMapper, Goods> {
     @Autowired
     private PositionService positionService;
-    @Autowired
+    @Resource
     private GoodsMapper goodsMapper;
-    @Autowired
+    @Resource
     private PositionMapper positionMapper;
 
     public boolean deleteGoodsById(Integer id) {
@@ -36,7 +36,7 @@ public class GoodsService extends ServiceImpl<GoodsMapper, Goods> {
         }
     }
 
-    public boolean updatePosition(GoodsDTO goodsDTO, Integer managerId) {
+    public boolean updatePosition(GoodsDTO goodsDTO) {
         Goods goods = new Goods();
         BeanUtil.copyProperties(goodsDTO, goods);
         goods.setAvailable(true);
