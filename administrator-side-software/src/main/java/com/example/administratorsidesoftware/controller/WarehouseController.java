@@ -10,6 +10,7 @@ import com.example.administratorsidesoftware.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 
@@ -22,12 +23,12 @@ public class WarehouseController {
     /**
      * if there is a warehouse with the same warehouseId, update it; if there isn't, create it.
      *
-     * @param warehouse the warehouse should be updated or want to create.
+     * @param warehouseDTO the warehouse should be updated or want to create.
      * @return true if the operation is successfully done.
      */
     @PostMapping("/change")
-    public Result saveOrUpdateWarehouse(@RequestBody WarehouseDTO warehouseDTO, HttpSession session) {
-        warehouseDTO.setManagerId((int)session.getAttribute("managerId"));
+    public Result saveOrUpdateWarehouse(@RequestBody WarehouseDTO warehouseDTO, HttpServletRequest res) {
+        warehouseDTO.setManagerId((Integer) res.getSession().getAttribute("managerId"));
         boolean result = warehouseService.saveOrUpdateWarehouse(warehouseDTO);
         if (result) {
             return Result.success(true);
@@ -63,10 +64,10 @@ public class WarehouseController {
     @GetMapping("/manager/list/page")
     public Result listWarehousePageByManager(@RequestParam Integer pageNum,
                                              @RequestParam Integer pageSize,
-                                             HttpSession session) {
+                                             HttpServletRequest res) {
         IPage<Warehouse> page = new Page<>(pageNum, pageSize);
         QueryWrapper<Warehouse> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("managerId", session.getAttribute("managerId"));
+        queryWrapper.eq("managerId", res.getSession().getAttribute("managerId"));
         return Result.success(warehouseService.page(page, queryWrapper));
     }
 
@@ -75,10 +76,10 @@ public class WarehouseController {
                                     @RequestParam Integer pageSize,
                                     @RequestParam(defaultValue = "") String warehouseName,
                                     @RequestParam Integer warehouseId,
-                                    HttpSession session) {
+                                    HttpServletRequest res) {
         IPage<Warehouse> page = new Page<>(pageNum, pageSize);
         QueryWrapper<Warehouse> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("managerId", session.getAttribute("managerId"));
+        queryWrapper.eq("managerId", res.getSession().getAttribute("managerId"));
         if (warehouseId != null) {
             queryWrapper.eq("warehouseId",warehouseId);
             return Result.success(warehouseService.page(page,queryWrapper));

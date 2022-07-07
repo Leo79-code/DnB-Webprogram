@@ -6,11 +6,8 @@ import com.example.administratorsidesoftware.controller.DTO.ManagerDTO;
 import com.example.administratorsidesoftware.entity.Manager;
 import com.example.administratorsidesoftware.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpCookie;
-import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -44,13 +41,13 @@ public class ManagerController {
 
     //Session test
     @GetMapping("/")
-    public String setSession( HttpServletRequest res){
-        res.getSession().setAttribute("session","my1 session");
+    public String setSession(HttpServletRequest res) {
+        res.getSession().setAttribute("session", "my1 session");
         return "set session";
     }
 
     @GetMapping("/session")
-    public String getSession(HttpSession session){
-        return (String) session.getAttribute("session");
+    public String getSession(HttpServletRequest res) {
+        return (String) res.getSession().getAttribute("session");
     }
 }
