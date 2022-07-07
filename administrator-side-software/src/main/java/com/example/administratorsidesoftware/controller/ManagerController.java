@@ -34,18 +34,18 @@ public class ManagerController {
         Manager login = managerService.login(managerDTO);
         if (login != null) {
             res.getSession().setAttribute("managerId", login.getManagerId());
-            return Result.success(res.getSession().getId());
+            return Result.success("JSESSIONID="+res.getSession().getId()+"; Path=/; HttpOnly;");
         } else {
             return Result.error("Input error");
         }
     }
 
     //Session test
-//    @GetMapping("/")
-//    public String setSession(HttpCookie cookie) {
-//        cookie.setValue("");
-//        return "set session";
-//    }
+    @GetMapping("/")
+    public String setSession(HttpCookie cookie) {
+        cookie.setValue("");
+        return "set session";
+    }
 //
 //    @GetMapping("/session")
 //    public String getSession(HttpServletRequest res) {
