@@ -8,7 +8,7 @@ import com.example.administratorsidesoftware.common.GoodsType;
 import lombok.Data;
 
 @Data
-@TableName(value = "Goods")
+@TableName(value = "goods")
 public class Goods {
     @TableId(value = "goodsId")
     private Integer goodsId;

@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 @Data
-@TableName(value = "Position")
+@TableName(value = "position")
 public class Position {
     @TableId(value = "positionNo")
     private Integer positionNo;
