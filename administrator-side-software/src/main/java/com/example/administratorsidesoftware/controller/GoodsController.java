@@ -62,24 +62,25 @@ public class GoodsController {
     }
 
 
-    /**
-     * Paging shows all goods in a warehouse
-     *
-     * @param pageNum     The sequence number of the page displayed
-     * @param pageSize    Maximum number of items that can be displayed per page
-     * @param warehouseNo The number of the warehouse being queried
-     * @return The information contained in the current page that should be displayed
-     */
-    @GetMapping("/warehouse/{warehouseNo}/list/page")
-    public Result listGoodsPageByWarehouse(@RequestParam Integer pageNum,
-                                            @RequestParam Integer pageSize,
-                                            @PathVariable Integer warehouseNo) {
-        IPage<Goods> page = new Page<>(pageNum, pageSize);
-        QueryWrapper<Goods> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("warehouseNo", warehouseNo);
-        queryWrapper.eq("available",true);
-        return Result.success(goodsService.page(page,queryWrapper));
-    }
+//    /**
+//     * Paging shows all goods in a warehouse
+//     *
+//     * @param pageNum     The sequence number of the page displayed
+//     * @param pageSize    Maximum number of items that can be displayed per page
+//     * @param warehouseNo The number of the warehouse being queried
+//     * @return The information contained in the current page that should be displayed
+//     */
+    //TODO 通过仓库展示商品，连表查询
+//    @GetMapping("/warehouse/{warehouseNo}/list/page")
+//    public Result listGoodsPageByWarehouse(@RequestParam Integer pageNum,
+//                                            @RequestParam Integer pageSize,
+//                                            @PathVariable Integer warehouseNo) {
+//        IPage<Goods> page = new Page<>(pageNum, pageSize);
+//        QueryWrapper<Goods> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.eq("warehouseNo", warehouseNo);
+//        queryWrapper.eq("available",true);
+//        return Result.success(goodsService.page(page,queryWrapper));
+//    }
 
     @PostMapping("/add")
     public Result addGoods(@RequestBody GoodsDTO goodsDTO){
