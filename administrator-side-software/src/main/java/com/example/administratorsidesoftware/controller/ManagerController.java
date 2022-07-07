@@ -6,8 +6,12 @@ import com.example.administratorsidesoftware.controller.DTO.ManagerDTO;
 import com.example.administratorsidesoftware.entity.Manager;
 import com.example.administratorsidesoftware.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpCookie;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @RestController
@@ -23,7 +27,7 @@ public class ManagerController {
      * @return true if the user is valid, false if the user isn't valid.
      */
     @PostMapping("/login")
-    public Result login(@RequestBody ManagerDTO managerDTO, HttpSession session) {
+    public Result login(@RequestBody ManagerDTO managerDTO, HttpServletRequest res) {
         Integer id = managerDTO.getManagerId();
         String password = managerDTO.getManagerPassword();
         if (id == null || StrUtil.isBlank(password)) {
@@ -31,7 +35,7 @@ public class ManagerController {
         }
         Manager login = managerService.login(managerDTO);
         if (login != null) {
-            session.setAttribute("managerId", login.getManagerId());
+            res.getSession().setAttribute("managerId", login.getManagerId());
             return Result.success(login);
         } else {
             return Result.error("Input error");
@@ -40,8 +44,8 @@ public class ManagerController {
 
     //Session test
     @GetMapping("/")
-    public String setSession(HttpSession session){
-        session.setAttribute("session","my session");
+    public String setSession( HttpServletRequest res){
+        res.getSession().setAttribute("session","my1 session");
         return "set session";
     }
 

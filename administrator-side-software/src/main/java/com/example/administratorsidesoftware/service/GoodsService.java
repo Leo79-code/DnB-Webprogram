@@ -1,14 +1,18 @@
 package com.example.administratorsidesoftware.service;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.administratorsidesoftware.common.GoodsType;
 import com.example.administratorsidesoftware.controller.DTO.GoodsDTO;
 import com.example.administratorsidesoftware.entity.Goods;
 import com.example.administratorsidesoftware.entity.Position;
+import com.example.administratorsidesoftware.entity.Warehouse;
 import com.example.administratorsidesoftware.mapper.GoodsMapper;
 import com.example.administratorsidesoftware.mapper.PositionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 
 @Service
@@ -32,7 +36,7 @@ public class GoodsService extends ServiceImpl<GoodsMapper, Goods> {
         }
     }
 
-    public boolean updatePosition(GoodsDTO goodsDTO) {
+    public boolean updatePosition(GoodsDTO goodsDTO, Integer managerId) {
         Goods goods = new Goods();
         BeanUtil.copyProperties(goodsDTO, goods);
         goods.setAvailable(true);
@@ -71,5 +75,13 @@ public class GoodsService extends ServiceImpl<GoodsMapper, Goods> {
         }else {
             return false;
         }
+    }
+
+    public IPage<Goods> findGoodsPageByWarehouse(IPage<Goods> page, Integer warehouseNo) {
+        return goodsMapper.findGoodsPageByWarehouse(page,warehouseNo);
+    }
+
+    public IPage<Goods> findGoodsPage(IPage<Goods> page, Integer goodsId, GoodsType color, Integer managerId) {
+        return goodsMapper.findGoodsPage(page,goodsId,color,managerId);
     }
 }
