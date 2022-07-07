@@ -5,7 +5,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.Quarter;
 import com.example.administratorsidesoftware.common.Result;
 import com.example.administratorsidesoftware.entity.Record;
-import com.example.administratorsidesoftware.mapper.RecordMapper;
+import com.example.administratorsidesoftware.service.RecordService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,20 +19,20 @@ import java.util.List;
 @RequestMapping("echarts/")
 public class EchartsController {
     @Resource
-    private RecordMapper recordMapper;
+    private RecordService recordService;
 
 //    //TODO 每个货架的利用率（本年度起算）
 
 
-
     /**
      * 分析某个仓库每个季度的进货量
+     *
      * @param warehouseId 仓库ID
      * @return 按顺序分别是第1，2，3，4季度进货量
      */
     @GetMapping("/warehouse/{warehouseId}/deposit")
     public Result getWarehouseDepositEcharts(@PathVariable Integer warehouseId) {
-        List<Record> records = recordMapper.searchRecordByWarehouse(warehouseId);
+        List<Record> records = recordService.searchRecordByWarehouse(warehouseId);
         int q1 = 0;
         int q2 = 0;
         int q3 = 0;
@@ -62,18 +62,18 @@ public class EchartsController {
 
     /**
      * 分析某仓库四个季度的出货量
+     *
      * @param warehouseId 仓库ID
      * @return arraylist，按顺序分别是第1，2，3，4季度的出货量
      */
     @GetMapping("/warehouse/{warehouseId}/takeout")
     public Result getWarehouseTakeoutEcharts(@PathVariable Integer warehouseId) {
-        List<Record> records = recordMapper.searchRecordByWarehouse(warehouseId);
+        List<Record> records = recordService.searchRecordByWarehouse(warehouseId);
         int q1 = 0;
         int q2 = 0;
         int q3 = 0;
         int q4 = 0;
         for (Record record : records) {
-
             Date takeoutTime = record.getTakeoutTime();
             if (takeoutTime != null) {
                 Quarter quarter = DateUtil.quarterEnum(takeoutTime);

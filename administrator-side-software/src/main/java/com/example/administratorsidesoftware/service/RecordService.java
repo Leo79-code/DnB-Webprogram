@@ -6,6 +6,7 @@ import com.example.administratorsidesoftware.mapper.RecordMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class RecordService extends ServiceImpl<RecordMapper, Record> {
@@ -15,5 +16,9 @@ public class RecordService extends ServiceImpl<RecordMapper, Record> {
     public boolean saveNewRecord(Integer positionNo, Integer goodsId){
         Record record = new Record(positionNo, goodsId);
         return recordMapper.insert(record) ==1;
+    }
+
+    public List<Record> searchRecordByWarehouse(Integer warehouseId) {
+        return recordMapper.searchRecordByWarehouse(warehouseId);
     }
 }

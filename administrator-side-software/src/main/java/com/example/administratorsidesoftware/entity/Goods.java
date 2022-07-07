@@ -18,10 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 @TableName(value = "goods")
 public class Goods {
 
-    @Autowired
-    @TableField(exist = false)
-    private GoodsService goodsService;
-
     @TableId(value = "goodsId",type = IdType.AUTO)
     private Integer goodsId;
     @TableField(value = "color")

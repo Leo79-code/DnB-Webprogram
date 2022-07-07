@@ -14,9 +14,6 @@ import java.util.Date;
 @Data
 @TableName(value = "record")
 public class Record {
-    @Autowired
-    @TableField(exist = false)
-    private RecordMapper recordMapper;
 
     @TableId(value = "recordId", type = IdType.AUTO)
     private Integer recordId;

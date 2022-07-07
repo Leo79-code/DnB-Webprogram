@@ -3,13 +3,11 @@ package com.example.administratorsidesoftware.service;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.administratorsidesoftware.common.Result;
 import com.example.administratorsidesoftware.controller.DTO.ManagerDTO;
 import com.example.administratorsidesoftware.entity.Manager;
 import com.example.administratorsidesoftware.mapper.ManagerMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
 
 @Service
 public class ManagerService extends ServiceImpl<ManagerMapper, Manager> {
