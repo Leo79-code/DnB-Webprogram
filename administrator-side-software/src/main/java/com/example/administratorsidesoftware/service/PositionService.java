@@ -82,8 +82,16 @@ public class PositionService extends ServiceImpl<PositionMapper, Position> {
         queryWrapper.eq("warehouseNo",warehouseNo);
         List<Position> positions = positionMapper.selectList(queryWrapper);
         for (Position position : positions) {
-            result = result && (positionMapper.deleteById(position)==1);
+            result = result && deletePosition(position);
         }
         return result;
+    }
+
+    private boolean deletePosition(Position position) {
+        if(position.isAvailable()){
+            return removeById(position);
+        }else {
+            return false;
+        }
     }
 }
