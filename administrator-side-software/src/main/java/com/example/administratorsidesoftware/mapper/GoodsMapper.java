@@ -8,11 +8,10 @@ import com.example.administratorsidesoftware.entity.Goods;
 import org.apache.ibatis.annotations.Mapper;
 
 
-@Mapper
+
 public interface GoodsMapper extends BaseMapper<Goods> {
     IPage<Goods> findGoodsPageByWarehouse(IPage<Goods> page, Integer warehouseNo);
 
     IPage<Goods> findGoodsPage(IPage<Goods> page, Integer goodsId, GoodsType color, Integer managerId);
 
-    Goods isGoodsManager(GoodsDTO goodsDTO, Integer managerId);
 }

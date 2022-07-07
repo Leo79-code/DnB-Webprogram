@@ -42,16 +42,16 @@ public class WorkerController {
      *
      * @param pageNum  The sequence number of the page displayed
      * @param pageSize Maximum number of items that can be displayed per page
-     * @param session  session information
+     * @param managerId
      * @return The information contained in the current page that should be displayed
      */
     @GetMapping("/manager/list/page")
     public Result listWorkerPageByManager(@RequestParam Integer pageNum,
                                           @RequestParam Integer pageSize,
-                                          HttpSession session) {
+                                          @RequestParam Integer managerId) {
         IPage<Worker> page = new Page<>(pageNum, pageSize);
         QueryWrapper<Worker> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("managerId", session.getAttribute("managerId"));
+        queryWrapper.eq("managerId", managerId);
         queryWrapper.eq("isEmployed", true);
         return Result.success(workerService.page(page, queryWrapper));
     }
@@ -63,8 +63,7 @@ public class WorkerController {
      * @return
      */
     @PostMapping("/change")
-    public Result saveOrUpdateWorker(@RequestBody WorkerDTO workerDTO, HttpSession session) {
-        workerDTO.setManagerId((int)session.getAttribute("managerId"));
+    public Result saveOrUpdateWorker(@RequestBody WorkerDTO workerDTO) {
         boolean result = workerService.saveOrUpdateWorker(workerDTO);
         if (result) {
             return Result.success(true);
@@ -93,11 +92,11 @@ public class WorkerController {
     public Result findWorkerPage(@RequestParam Integer pageNum,
                                  @RequestParam Integer pageSize,
                                  @RequestParam(defaultValue = "") String workerName,
-                                 @RequestParam Integer workerId,
-                                 HttpSession session) {
+                                 @RequestParam(required = false) Integer workerId,
+                                 @RequestParam Integer managerId) {
         IPage<Worker> page = new Page<>(pageNum, pageSize);
         QueryWrapper<Worker> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("managerId",session.getAttribute("managerId"));
+        queryWrapper.eq("managerId",managerId);
         queryWrapper.eq("isEmployed",true);
         if(workerId != null){
             queryWrapper.eq("workerId",workerId);

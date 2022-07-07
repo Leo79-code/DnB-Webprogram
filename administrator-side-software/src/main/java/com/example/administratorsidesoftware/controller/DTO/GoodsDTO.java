@@ -11,4 +11,5 @@ public class GoodsDTO {
     private GoodsType color;
     private Integer positionNo;
     private boolean available;
+    private Integer managerId;
 }

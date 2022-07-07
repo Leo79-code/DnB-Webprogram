@@ -33,22 +33,9 @@ public class ManagerController {
         }
         Manager login = managerService.login(managerDTO);
         if (login != null) {
-            //res.getSession().setAttribute("managerId", login.getManagerId());
             return Result.success(login);
         } else {
             return Result.error("Input error");
         }
     }
-
-    //Session test
-    @GetMapping("/")
-    public String setSession(HttpCookie cookie) {
-        cookie.setValue("");
-        return "set session";
-    }
-//
-//    @GetMapping("/session")
-//    public String getSession(HttpServletRequest res) {
-//        return (String) res.getSession().getAttribute("session");
-//    }
 }

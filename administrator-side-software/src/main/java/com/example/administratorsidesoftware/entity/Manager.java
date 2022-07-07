@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @TableName(value = "Manager")
 public class Manager {
-    @TableId(value = "managerID")
+    @TableId(value = "managerId")
     private Integer managerId;
     @TableField(value = "managerPassword")
     private String managerPassword;

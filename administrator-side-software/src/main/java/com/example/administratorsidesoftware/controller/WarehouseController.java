@@ -27,8 +27,7 @@ public class WarehouseController {
      * @return true if the operation is successfully done.
      */
     @PostMapping("/change")
-    public Result saveOrUpdateWarehouse(@RequestBody WarehouseDTO warehouseDTO, HttpServletRequest res) {
-        warehouseDTO.setManagerId((Integer) res.getSession().getAttribute("managerId"));
+    public Result saveOrUpdateWarehouse(@RequestBody WarehouseDTO warehouseDTO) {
         boolean result = warehouseService.saveOrUpdateWarehouse(warehouseDTO);
         if (result) {
             return Result.success(true);
@@ -75,11 +74,11 @@ public class WarehouseController {
     public Result findWarehousePage(@RequestParam Integer pageNum,
                                     @RequestParam Integer pageSize,
                                     @RequestParam(defaultValue = "") String warehouseName,
-                                    @RequestParam Integer warehouseId,
-                                    HttpServletRequest res) {
+                                    @RequestParam(required = false)Integer warehouseId,
+                                    @RequestParam Integer managerId) {
         IPage<Warehouse> page = new Page<>(pageNum, pageSize);
         QueryWrapper<Warehouse> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("managerId", res.getSession().getAttribute("managerId"));
+        queryWrapper.eq("managerId", managerId);
         if (warehouseId != null) {
             queryWrapper.eq("warehouseId",warehouseId);
             return Result.success(warehouseService.page(page,queryWrapper));

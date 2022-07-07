@@ -5,24 +5,30 @@ import com.example.administratorsidesoftware.controller.DTO.GoodsDTO;
 import com.example.administratorsidesoftware.entity.Goods;
 import com.example.administratorsidesoftware.entity.Position;
 import com.example.administratorsidesoftware.mapper.GoodsMapper;
+import com.example.administratorsidesoftware.mapper.ManagerMapper;
 import com.example.administratorsidesoftware.mapper.PositionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 @Service
 public class PositionService extends ServiceImpl<PositionMapper, Position> {
 
-    @Autowired
+    @Resource
     private PositionMapper positionMapper;
-    @Autowired
+    @Resource
     private GoodsMapper goodsMapper;
+    @Resource
+    private ManagerMapper managerMapper;
 
 
-    public boolean putin(GoodsDTO goodsDTO, Integer managerId) {
+    public boolean putin(GoodsDTO goodsDTO) {
         //goodsDTO中position是要放入的地方
         Position position = positionMapper.selectById(goodsDTO.getPositionNo());
         //要放入的地方
-        if (position.isAvailable() &&(goodsMapper.isGoodsManager(goodsDTO, managerId) != null)) {
+        if (position.isAvailable() &&
+                (managerMapper.getPositionManager(position.getPositionNo()).getManagerId().equals(goodsDTO.getManagerId()))) {
             position.setAvailable(false);
             return updateById(position);
         } else {
