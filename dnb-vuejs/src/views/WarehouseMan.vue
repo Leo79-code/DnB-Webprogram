@@ -81,7 +81,8 @@ export default {
       this.load()
     },
     load() {
-      this.request.get("/warehouse/manager/list/page?pageNum=" + this.pageNum + "&pageSize=" + this.pageSize).then(res => {
+      this.request.get("/warehouse/manager/list/page?pageNum=" + this.pageNum + "&pageSize=" + this.pageSize
+          + "&res=" + sessionStorage.getItem("JSESSIONID")).then(res => {
         console.log(res)
         this.tableData = res.data.records
         this.total = res.data.total

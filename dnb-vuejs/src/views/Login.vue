@@ -20,6 +20,7 @@
 
 <script>
 export default {
+
   name: 'login',
   data: function () {
     return {
@@ -34,6 +35,8 @@ export default {
       this.request.post("/manager/login", this.manager).then(res => {
         if (res.state === "SUCCESS") {
           this.$router.push("/manage")
+          // this.$cookie.set('JSESSIONID',res.data)
+          sessionStorage.setItem("JSESSIONID",res.data);
         } else {
           this.$message.error("Sorry, your account and password did not match.")
         }
