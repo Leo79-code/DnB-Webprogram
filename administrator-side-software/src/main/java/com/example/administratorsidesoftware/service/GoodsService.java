@@ -67,6 +67,9 @@ public class GoodsService extends ServiceImpl<GoodsMapper, Goods> {
     }
 
     public boolean addGoods(GoodsDTO goodsDTO) {
+        if((goodsMapper.selectById(goodsDTO.getGoodsId()) != null)|| goodsDTO.getGoodsId()<=0 ){
+            return false;
+        };
         if(positionService.putin(goodsDTO)){
             Goods goods = new Goods();
             BeanUtil.copyProperties(goodsDTO,goods);

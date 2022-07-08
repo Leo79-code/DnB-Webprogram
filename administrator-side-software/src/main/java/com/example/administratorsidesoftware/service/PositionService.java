@@ -123,4 +123,11 @@ public class PositionService extends ServiceImpl<PositionMapper, Position> {
         queryWrapper.eq("warehouseNo",warehouseNo);
         return positionMapper.selectList(queryWrapper);
     }
+
+    public List<Position> listNonEmptyPositionByWarehouse(Integer warehouseNo) {
+        QueryWrapper<Position> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("warehouseNo",warehouseNo);
+        queryWrapper.eq("available",false);
+        return positionMapper.selectList(queryWrapper);
+    }
 }
