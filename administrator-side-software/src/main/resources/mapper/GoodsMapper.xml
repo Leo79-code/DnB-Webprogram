@@ -21,7 +21,7 @@
     </select>
     <select id="findGoodsIdByPositionNo" resultType="com.example.administratorsidesoftware.entity.Goods">
         select * from goods
-        where positionNo = #{positionNo}
+        where positionNo = #{positionNo} and available = true
     </select>
 
 </mapper>
