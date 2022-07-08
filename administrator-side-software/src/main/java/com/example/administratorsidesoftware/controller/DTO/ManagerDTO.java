@@ -4,7 +4,9 @@ import lombok.Data;
 
 @Data
 public class ManagerDTO {
-    private String managerPassword;
-    private Integer managerId;
-    private String managerName;
+    public String managerPassword;
+    public Integer managerId;
+    public String managerName;
+    // hCaptcha verification token
+    public String token;
 }
