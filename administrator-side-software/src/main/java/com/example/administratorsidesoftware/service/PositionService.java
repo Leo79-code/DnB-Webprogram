@@ -1,9 +1,11 @@
 package com.example.administratorsidesoftware.service;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.administratorsidesoftware.common.Constant;
 import com.example.administratorsidesoftware.controller.DTO.GoodsDTO;
+import com.example.administratorsidesoftware.controller.DTO.PositionDTO;
 import com.example.administratorsidesoftware.entity.Goods;
 import com.example.administratorsidesoftware.entity.Position;
 import com.example.administratorsidesoftware.entity.Record;
@@ -15,6 +17,7 @@ import com.example.administratorsidesoftware.mapper.RecordMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -79,7 +82,7 @@ public class PositionService extends ServiceImpl<PositionMapper, Position> {
     public boolean removeWarehouse(Integer warehouseNo) {
         boolean result = true;
         QueryWrapper<Position> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("warehouseNo",warehouseNo);
+        queryWrapper.eq("warehouseNo", warehouseNo);
         List<Position> positions = positionMapper.selectList(queryWrapper);
         for (Position position : positions) {
             result = result && deletePosition(position);
@@ -88,10 +91,26 @@ public class PositionService extends ServiceImpl<PositionMapper, Position> {
     }
 
     private boolean deletePosition(Position position) {
-        if(position.isAvailable()){
+        if (position.isAvailable()) {
             return removeById(position);
-        }else {
+        } else {
             return false;
         }
+    }
+
+    public List<PositionDTO> listPositionPageByWarehouse(Integer warehouseNo) {
+        List<PositionDTO> positionDTOList = new ArrayList<>();
+        QueryWrapper<Position> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("warehouseNo", warehouseNo);
+        List<Position> positions = positionMapper.selectList(queryWrapper);
+        for (Position position : positions) {
+            PositionDTO positionDTO = new PositionDTO();
+            BeanUtil.copyProperties(position, positionDTO);
+            if (!positionDTO.isAvailable()){
+                positionDTO.setGoodsId(goodsMapper.findGoodsIdByPositionNo(positionDTO.getPositionNo()).getGoodsId());
+            }
+            positionDTOList.add(positionDTO);
+        }
+        return positionDTOList;
     }
 }

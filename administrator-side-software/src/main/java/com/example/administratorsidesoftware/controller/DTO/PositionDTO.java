@@ -7,4 +7,5 @@ public class PositionDTO {
     private Integer positionNo;
     private boolean available;
     private Integer warehouseNo;
+    private Integer goodsId;
 }

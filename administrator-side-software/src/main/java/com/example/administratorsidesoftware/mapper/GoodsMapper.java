@@ -13,4 +13,5 @@ public interface GoodsMapper extends BaseMapper<Goods> {
 
     IPage<Goods> findGoodsPage(IPage<Goods> page, Integer goodsId, GoodsType color, Integer managerId);
 
+    Goods findGoodsIdByPositionNo(Integer positionNo);
 }
