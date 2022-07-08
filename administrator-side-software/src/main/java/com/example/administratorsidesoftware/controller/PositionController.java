@@ -1,9 +1,11 @@
 package com.example.administratorsidesoftware.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.administratorsidesoftware.common.Result;
 import com.example.administratorsidesoftware.controller.DTO.PositionDTO;
+import com.example.administratorsidesoftware.entity.Position;
 import com.example.administratorsidesoftware.service.PositionService;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,11 +35,22 @@ public class PositionController {
         IPage<PositionDTO> page = new Page<>(pageNum, pageSize);
         List<PositionDTO> positionDTOList = positionService.listPositionDTOByWarehouse(warehouseNo);
         List<PositionDTO> positionDTOPage = new ArrayList<>();
-        positionDTOPage.addAll(positionDTOList.subList((pageNum - 1) * pageSize, Math.min(((pageNum - 1) * pageSize + pageSize),positionDTOList.size())));
+        positionDTOPage.addAll(positionDTOList.subList((pageNum - 1) * pageSize, Math.min(((pageNum - 1) * pageSize + pageSize), positionDTOList.size())));
         page.setRecords(positionDTOPage);
         page.setTotal(positionDTOList.size());
         page.setCurrent(pageNum);
         return Result.success(page);
+    }
+
+    @GetMapping("/warehouse/{warehouseNo}/empty/page")
+    public Result listEmptyPositionPageByWarehouse(@RequestParam Integer pageNum,
+                                                   @RequestParam Integer pageSize,
+                                                   @PathVariable Integer warehouseNo) {
+        IPage<Position> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<Position> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("warehouseNo", warehouseNo);
+        queryWrapper.eq("available", true);
+        return Result.success(positionService.page(page, queryWrapper));
     }
 
 }
