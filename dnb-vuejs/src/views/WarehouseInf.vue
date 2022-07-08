@@ -34,9 +34,9 @@
           label-width="70px"
           style="width: 250px; margin-left:50px;"
       >
-        <el-form-item label="Goods ID" prop="goodsId">
+<!--        <el-form-item label="Goods ID" prop="goodsId">
           <el-input v-model="goods.goodsId"/>
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item label="Goods Color" prop="color">
           <el-select v-model="colorSel" clearable placeholder="Select PositionNo">
             <el-option
