@@ -33,7 +33,7 @@ public class PositionController {
         IPage<PositionDTO> page = new Page<>(pageNum, pageSize);
         List<PositionDTO> positionDTOList = positionService.listPositionDTOByWarehouse(warehouseNo);
         List<PositionDTO> positionDTOPage = new ArrayList<>();
-        positionDTOPage.addAll(positionDTOList.subList((pageNum - 1) * pageSize, (pageNum - 1) * pageSize + pageSize));
+        positionDTOPage.addAll(positionDTOList.subList((pageNum - 1) * pageSize, Math.min(((pageNum - 1) * pageSize + pageSize),positionDTOList.size())));
         page.setRecords(positionDTOPage);
         page.setTotal(positionDTOList.size());
         page.setCurrent(pageNum);

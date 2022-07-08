@@ -32,8 +32,9 @@ public class EchartsController {
 
     /**
      * 饼状图，显示某warehouse内position占用具体情况，会显示若position被占用是哪种货物占用的
+     *
      * @param warehouseNo 查询的warehouse
-     * @return 按顺序分别是red，green，blue，yellow，available的数量
+     * @return 按顺序分别是red，green，blue，yellow的数量
      */
     @GetMapping("/position/{warehouseNo}/color")
     public Result getPositionColorEcharts(@PathVariable Integer warehouseNo) {
@@ -42,11 +43,8 @@ public class EchartsController {
         int green = 0;
         int blue = 0;
         int yellow = 0;
-        int available = 0;
         for (PositionDTO positionDTO : positionDTOList) {
-            if (positionDTO.isAvailable()) {
-                available++;
-            } else {
+            if (!positionDTO.isAvailable()) {
                 GoodsType color;
                 color = positionDTO.getColor();
                 switch (color) {
@@ -67,7 +65,7 @@ public class EchartsController {
                 }
             }
         }
-        return Result.success(CollUtil.newArrayList(red,green,blue,yellow,available));
+        return Result.success(CollUtil.newArrayList(red, green, blue, yellow));
     }
 
 
