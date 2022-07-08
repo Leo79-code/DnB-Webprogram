@@ -18,8 +18,17 @@
           @click='handleCreate(); getPosition()'
       >Add new Goods
       </el-button>
+      <el-button
+          :disabled="Disabled"
+          class="filter-item"
+          style="margin-left: 10px;"
+          type="warning"
+          icon="el-icon-delete"
+          @click='handleDelete()'
+      >Delete Goods
+      </el-button>
     </template>
-    <el-dialog :visible.sync="dialogFormVisible" style="width: 800px">
+    <el-dialog :visible.sync="dialogFormVisible1" style="width: 800px">
       <el-form
           label-position="top"
           label-width="70px"
@@ -50,8 +59,23 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">Quit</el-button>
+        <el-button @click="dialogFormVisible1 = false">Quit</el-button>
         <el-button type="primary" @click=" createGoods() ">Confirm</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog :visible.sync="dialogFormVisible2" style="width: 800px">
+      <el-form
+          label-position="top"
+          label-width="70px"
+          style="width: 250px; margin-left:50px;"
+      >
+        <el-form-item label="Goods ID" prop="toDelGoodsId">
+          <el-input v-model="toDelGoodsId"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible2 = false">Quit</el-button>
+        <el-button type="warning" @click=" deleteGoods() ">Delete</el-button>
       </div>
     </el-dialog>
     <el-row>
@@ -115,6 +139,7 @@ export default {
         color: "",
         positionNo: "",
       },
+      toDelGoodsId: "",
       options: [],
       positionOptions: [],
       colorOptions: [{
@@ -137,7 +162,8 @@ export default {
       total: 0,
       pageNum: 1,
       pageSize: 5,
-      dialogFormVisible: false,
+      dialogFormVisible1: false,
+      dialogFormVisible2: false,
       value: "",
       positionSel: "",
       colorSel: "",
@@ -238,7 +264,11 @@ export default {
         positionNo: "",
         managerId: sessionStorage.getItem('managerId'),
       }
-      this.dialogFormVisible = true;
+      this.dialogFormVisible1 = true;
+    },
+    handleDelete() {
+      this.toDelGoodsId = ""
+      this.dialogFormVisible2 = true;
     },
     //Create Button Confirm
     async createGoods() {
@@ -249,9 +279,20 @@ export default {
         if (res.state === "SUCCESS") {
           this.$message.success("Created Successfully!")
           this.load()
-          this.dialogFormVisible = false
+          this.dialogFormVisible1 = false
         } else {
           this.$message.error("Sorry, your input is wrong.")
+        }
+      })
+    },
+    async deleteGoods() {
+      this.request.delete("/goods/" + this.toDelGoodsId).then(res => {
+        if (res.state === "SUCCESS") {
+          this.$message.success("Deleted Successfully!")
+          this.load()
+        } else {
+          this.$message.error("Error")
+          this.load()
         }
       })
     }
