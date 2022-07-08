@@ -3,7 +3,9 @@ package com.example.administratorsidesoftware.controller;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.Quarter;
+import com.example.administratorsidesoftware.common.GoodsType;
 import com.example.administratorsidesoftware.common.Result;
+import com.example.administratorsidesoftware.controller.DTO.PositionDTO;
 import com.example.administratorsidesoftware.entity.Position;
 import com.example.administratorsidesoftware.entity.Record;
 import com.example.administratorsidesoftware.service.PositionService;
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.sql.ResultSet;
 import java.util.Date;
 import java.util.List;
 
@@ -29,25 +30,66 @@ public class EchartsController {
 
 //    //TODO 每个货架的利用率（本年度起算）
 
+    /**
+     * 饼状图，显示某warehouse内position占用具体情况，会显示若position被占用是哪种货物占用的
+     * @param warehouseNo 查询的warehouse
+     * @return 按顺序分别是red，green，blue，yellow，available的数量
+     */
+    @GetMapping("/position/{warehouseNo}/color")
+    public Result getPositionColorEcharts(@PathVariable Integer warehouseNo) {
+        List<PositionDTO> positionDTOList = positionService.listPositionDTOByWarehouse(warehouseNo);
+        int red = 0;
+        int green = 0;
+        int blue = 0;
+        int yellow = 0;
+        int available = 0;
+        for (PositionDTO positionDTO : positionDTOList) {
+            if (positionDTO.isAvailable()) {
+                available++;
+            } else {
+                GoodsType color;
+                color = positionDTO.getColor();
+                switch (color) {
+                    case red:
+                        red++;
+                        break;
+                    case green:
+                        green++;
+                        break;
+                    case blue:
+                        blue++;
+                        break;
+                    case yellow:
+                        yellow++;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        return Result.success(CollUtil.newArrayList(red,green,blue,yellow,available));
+    }
+
 
     /**
      * 饼状图，显示warehouse中被占用的position和没被占用的position的占比
+     *
      * @param warehouseNo 要查找的warehouse
      * @return 按顺序分别是未被占用的，被占用的
      */
     @GetMapping("/position/{warehouseNo}/occupy")
-    public Result getPositionOccupyEcharts(@PathVariable Integer warehouseNo){
+    public Result getPositionOccupyEcharts(@PathVariable Integer warehouseNo) {
         List<Position> positions = positionService.listPositionByWarehouse(warehouseNo);
         int available = 0;
         int unavailable = 0;
         for (Position position : positions) {
-            if(position.isAvailable()){
+            if (position.isAvailable()) {
                 available++;
-            }else {
+            } else {
                 unavailable++;
             }
         }
-        return Result.success(CollUtil.newArrayList(available,unavailable));
+        return Result.success(CollUtil.newArrayList(available, unavailable));
     }
 
 

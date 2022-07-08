@@ -106,8 +106,12 @@ public class PositionService extends ServiceImpl<PositionMapper, Position> {
         for (Position position : positions) {
             PositionDTO positionDTO = new PositionDTO();
             BeanUtil.copyProperties(position, positionDTO);
-            if (!positionDTO.isAvailable()){
+            if (positionDTO.isAvailable()){
+                positionDTO.setStrAvailable("true");
+            }else {
+                positionDTO.setStrAvailable("false");
                 positionDTO.setGoodsId(goodsMapper.findGoodsIdByPositionNo(positionDTO.getPositionNo()).getGoodsId());
+                positionDTO.setColor(goodsMapper.findGoodsIdByPositionNo(positionDTO.getPositionNo()).getColor());
             }
             positionDTOList.add(positionDTO);
         }
