@@ -49,6 +49,11 @@
               type="danger"
               @click="handleDelete(scope.row.warehouseNo)">Delete
           </el-button>
+          <el-button
+              size="mini"
+              type="primary"
+              @click="handleJump(scope.row.warehouseNo)">Detail
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -137,6 +142,10 @@ export default {
           this.load()
         }
       })
+    },
+    handleJump(warehouseNo) {
+      this.$router.push('/manage/warehouseinf')
+
     }
   },
 }

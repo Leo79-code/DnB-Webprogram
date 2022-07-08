@@ -43,9 +43,9 @@ public class GoodsService extends ServiceImpl<GoodsMapper, Goods> {
         Goods goods1 = goodsMapper.selectById(goodsDTO.getGoodsId());
         Position position = positionMapper.selectById(goods1.getPositionNo());
         if (positionService.takeout(goodsDTO)) {
-            if(positionService.putin(goodsDTO)){
+            if (positionService.putin(goodsDTO)) {
                 return updateById(goods);
-            }else {
+            } else {
                 goodsDTO.setPositionNo(position.getPositionNo());
                 positionService.putin(goodsDTO);
                 return false;
@@ -57,34 +57,33 @@ public class GoodsService extends ServiceImpl<GoodsMapper, Goods> {
 
     public boolean updateColor(GoodsDTO goodsDTO) {
         Goods goods = goodsMapper.selectById(goodsDTO.getGoodsId());
-        if(goods.isAvailable()){
+        if (goods.isAvailable()) {
             Goods goods1 = new Goods();
-            BeanUtil.copyProperties(goodsDTO,goods1);
+            BeanUtil.copyProperties(goodsDTO, goods1);
             return updateById(goods1);
-        }else {
+        } else {
             return false;
         }
     }
 
     public boolean addGoods(GoodsDTO goodsDTO) {
-        if((goodsMapper.selectById(goodsDTO.getGoodsId()) != null)|| goodsDTO.getGoodsId()<=0 ){
-            return false;
-        };
-        if(positionService.putin(goodsDTO)){
-            Goods goods = new Goods();
-            BeanUtil.copyProperties(goodsDTO,goods);
-            goods.setAvailable(true);
-            return goodsMapper.insert(goods)==1;
-        }else {
-            return false;
-        }
+//        if((goodsMapper.selectById(goodsDTO.getGoodsId()) != null)|| goodsDTO.getGoodsId()<=0){
+//            return false;
+//        };
+        Goods goods = new Goods();
+        BeanUtil.copyProperties(goodsDTO, goods);
+        goods.setAvailable(true);
+        boolean result = goodsMapper.insert(goods) == 1;
+        BeanUtil.copyProperties(goods, goodsDTO);
+        result = result && positionService.putin(goodsDTO);
+        return result;
     }
 
     public IPage<Goods> findGoodsPageByWarehouse(IPage<Goods> page, Integer warehouseNo) {
-        return goodsMapper.findGoodsPageByWarehouse(page,warehouseNo);
+        return goodsMapper.findGoodsPageByWarehouse(page, warehouseNo);
     }
 
     public IPage<Goods> findGoodsPage(IPage<Goods> page, Integer goodsId, GoodsType color, Integer managerId) {
-        return goodsMapper.findGoodsPage(page,goodsId,color,managerId);
+        return goodsMapper.findGoodsPage(page, goodsId, color, managerId);
     }
 }

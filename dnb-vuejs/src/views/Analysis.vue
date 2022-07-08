@@ -1,7 +1,7 @@
 <template>
   <div>
     <template>
-      <el-select v-model="value" @change="drawChart" placeholder="Select Warehouse">
+      <el-select v-model="value" @change="drawChart" placeholder="Select Warehouse" style="margin-bottom: 10px">
         <el-option
             v-for="item in options"
             :key="item.warehouseNo"
@@ -48,7 +48,7 @@ export default {
 
       option1 = {
         title: {
-          text: this.value + '号仓库季度存储记录'
+          text: this.value + '号仓库季度入库记录'
         },
         xAxis: {
           type: 'category',
@@ -67,7 +67,7 @@ export default {
 
       option2 = {
         title: {
-          text: this.value + '号仓库季度存储记录'
+          text: this.value + '号仓库季度出库记录'
         },
         xAxis: {
           type: 'category',
