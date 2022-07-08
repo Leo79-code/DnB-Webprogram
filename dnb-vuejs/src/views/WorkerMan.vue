@@ -1,6 +1,31 @@
 <template>
   <div class="tab-container">
-    <el-button @click="load()">Load</el-button>
+    <el-button
+        class="filter-item"
+        style="margin-left: 10px;"
+        type="primary"
+        icon="el-icon-edit"
+        @click="handleCreate"
+    >Create
+    </el-button>
+    <el-dialog :visible.sync="dialogFormVisible" style="width: 800px">
+      <el-form
+          label-position="top"
+          label-width="70px"
+          style="width: 250px; margin-left:50px;"
+      >
+        <el-form-item label="Worker Name" prop="workerName">
+          <el-input v-model="worker.workerName"/>
+        </el-form-item>
+        <el-form-item label="Warehouse No" prop="warehouseNo">
+          <el-input v-model="worker.warehouseNo"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">Quit</el-button>
+        <el-button type="primary" @click=" createData() ">Confirm</el-button>
+      </div>
+    </el-dialog>
     <el-table
         :data="tableData"
         height="550"
@@ -47,35 +72,7 @@
           :total="total">
       </el-pagination>
     </div>
-    <el-button
-        class="filter-item"
-        style="margin-left: 10px;"
-        type="primary"
-        icon="el-icon-edit"
-        @click="handleCreate"
-    >Create
-    </el-button>
-    <el-dialog :visible.sync="dialogFormVisible">
-      <el-form
-          label-position="top"
-          label-width="90px"
-          style="width: 600px; margin-left:50px;"
-      >
-        <el-form-item label="Worker ID" prop="workerId">
-          <el-input v-model="worker.workerId"/>
-        </el-form-item>
-        <el-form-item label="Worker Name" prop="workerName">
-          <el-input v-model="worker.workerName"/>
-        </el-form-item>
-        <el-form-item label="Warehouse No" prop="warehouseNo">
-          <el-input v-model="worker.warehouseNo"/>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">Quit</el-button>
-        <el-button type="primary" @click=" createData() ">Confirm</el-button>
-      </div>
-    </el-dialog>
+
   </div>
 </template>
 
@@ -98,10 +95,10 @@ export default {
     };
 
   },
+  created() {
+    this.load()
+  },
   methods: {
-    created() {
-      this.load()
-    },
     load() {
       this.request.get("/worker/manager/list/page?pageNum=" + this.pageNum + "&pageSize=" + this.pageSize
           + "&managerId=" + sessionStorage.getItem("managerId")).then(res => {
@@ -153,7 +150,7 @@ export default {
         }
       })
     }
-  },
+  }
 }
 </script>
 

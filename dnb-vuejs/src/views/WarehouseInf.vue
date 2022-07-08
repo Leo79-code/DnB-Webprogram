@@ -1,73 +1,167 @@
 <template>
-  <div>
-    <el-button @click="resetDateFilter">清除日期过滤器</el-button>
-    <el-button @click="clearFilter">清除所有过滤器</el-button>
+  <div class="tab-container">
+    <template>
+      <el-select v-model="value" @change="loadTable" clearable placeholder="Select Warehouse">
+        <el-option
+            v-for="item in options"
+            :key="item.warehouseNo"
+            :label="item.warehouseNo"
+            :value="item.warehouseNo">
+        </el-option>
+      </el-select>
+    </template>
+
+    <el-row>
+      <el-col :span="12">
     <el-table
-        ref="filterTable"
         :data="tableData"
+        height="550"
+        stripe
         style="width: 100%">
       <el-table-column
-          prop="date"
-          label="日期"
-          sortable
-          width="180"
-          column-key="date"
-          :filters="[{text: '2016-05-01', value: '2016-05-01'}, {text: '2016-05-02', value: '2016-05-02'}, {text: '2016-05-03', value: '2016-05-03'}, {text: '2016-05-04', value: '2016-05-04'}]"
-          :filter-method="filterHandler"
-      >
-      </el-table-column>
-      <el-table-column
-          prop="name"
-          label="姓名"
+          prop="positionNo"
+          label="Position No"
           width="180">
       </el-table-column>
       <el-table-column
-          prop="address"
-          label="地址"
-          :formatter="formatter">
+          prop="strAvailable"
+          label="Available"
+          width="180">
       </el-table-column>
       <el-table-column
-          prop="tag"
-          label="标签"
-          width="100"
-          :filters="[{ text: '家', value: '家' }, { text: '公司', value: '公司' }]"
-          :filter-method="filterTag"
-          filter-placement="bottom-end">
-        <template slot-scope="scope">
-          <el-tag
-              :type="scope.row.tag === '家' ? 'primary' : 'success'"
-              disable-transitions>{{ scope.row.tag }}
-          </el-tag>
-        </template>
+          prop="warehouseNo"
+          label="Warehouse No"
+          width="180">
       </el-table-column>
     </el-table>
+      </el-col>
+      <el-col :span="12">
+        <div id="main" style="width: 800px; height: 600px"></div>
+      </el-col>
+    </el-row>
+    <div style="padding: 10px 0">
+      <el-pagination
+          :page-sizes="[5, 10]"
+          :page-size="pageSize"
+          :current-page="pageNum"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total">
+      </el-pagination>
+    </div>
+
   </div>
 </template>
 
+
 <script>
+import * as echarts from 'echarts'
+
 export default {
   data() {
     return {
-      tableData: []
-    }
+      position: {
+        positionNo: "",
+        strAvailable: "",
+        warehouseNo: "",
+      },
+      options: [],
+      tableData: [],
+      total: 0,
+      pageNum: 1,
+      pageSize: 5,
+      dialogFormVisible: false,
+      value: "",
+    };
+  },
+  mounted() {
+    this.getWarehouse()
   },
   methods: {
-    resetDateFilter() {
-      this.$refs.filterTable.clearFilter('date');
+    loadTable() {
+      this.request.get("/position/warehouse/" + this.value + "/list/page?pageNum=" + this.pageNum + "&pageSize="
+          + this.pageSize).then(res => {
+        // console.log(res)
+        this.tableData = res.data.records
+        this.total = res.data.total
+      })
+      this.loadChart()
     },
-    clearFilter() {
-      this.$refs.filterTable.clearFilter();
+    handleSizeChange(pageSize) {
+      // console.log(pageSize)
+      this.pageSize = pageSize
+      this.loadTable()
     },
-    formatter(row, column) {
-      return row.address;
+    handleCurrentChange(pageNum) {
+      // console.log(pageNum)
+      this.pageNum = pageNum
+      this.loadTable()
     },
-    filterTag(value, row) {
-      return row.tag === value;
+    getWarehouse() {
+      this.request.get("/warehouse/manager/list/page?pageNum=1&pageSize=999&managerId="
+          + sessionStorage.getItem('managerId')).then(res => {
+        this.options = res.data.records
+      })
     },
-    filterHandler(value, row, column) {
-      const property = column['property'];
-      return row[property] === value;
+    loadChart() {
+      var chartDom = document.getElementById('main');
+      var myChart = echarts.init(chartDom);
+      var option;
+
+      option = {
+        tooltip: {
+          trigger: 'item'
+        },
+        legend: {
+          top: '5%',
+          left: 'center'
+        },
+        series: [
+          {
+            name:"",
+            type: 'pie',
+            radius: ['40%', '70%'],
+            avoidLabelOverlap: false,
+            itemStyle: {
+              borderRadius: 10,
+              borderColor: '#fff',
+              borderWidth: 2
+            },
+            label: {
+              show: false,
+              position: 'center'
+            },
+            emphasis: {
+              label: {
+                show: false,
+                fontSize: '30',
+                fontWeight: 'bold'
+              }
+            },
+            labelLine: {
+              show: false
+            },
+            data: [
+              {value: 0, name: 'Available'},
+              {value: 0, name: 'Occupied'}
+            ],
+
+          },
+        ]
+      };
+
+        this.request.get("/echarts/position/" + this.value + "/occupy").then(res => {
+          option.series[0].data[0].value = res.data[0]
+          option.series[0].data[1].value = res.data[1]
+          // console.log(option.series[0])
+          myChart.setOption(option);
+        })
+      }
     }
-  }
 }
 </script>
+
+<style scoped>
+
+</style>

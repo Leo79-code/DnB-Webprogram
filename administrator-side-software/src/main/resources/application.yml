@@ -4,6 +4,8 @@ spring:
     url: jdbc:mysql://sh-cynosdbmysql-grp-bjvph056.sql.tencentcdb.com:25732/Ecommerce
     username: root
     password: Bupt2022
+    hikari:
+      max-lifetime: 5000000
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
