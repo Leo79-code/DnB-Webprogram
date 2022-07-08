@@ -1,6 +1,27 @@
 <template>
   <div class="tab-container">
-    <el-button @click="load()">Load</el-button>
+    <el-button
+        class="filter-item"
+        style="margin-left: 10px;"
+        type="primary"
+        icon="el-icon-edit"
+        @click="handleCreate"
+    >Create
+    </el-button>
+    <el-dialog :visible.sync="dialogFormVisible" style="width: 800px">
+      <el-form
+          label-position="top"
+          style="width: 200px; margin-left:50px;"
+      >
+        <el-form-item label="Warehouse Name" prop="managerName">
+          <el-input v-model="warehouse.warehouseName"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">Quit</el-button>
+        <el-button type="primary" @click="createData()">Confirm</el-button>
+      </div>
+    </el-dialog>
     <el-table
         :data="tableData"
         height="550"
@@ -21,6 +42,15 @@
           label="Manager ID"
           width="180">
       </el-table-column>
+      <el-table-column label="" width="180">
+        <template slot-scope="scope">
+          <el-button
+              size="mini"
+              type="danger"
+              @click="handleDelete(scope.row.warehouseNo)">Delete
+          </el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <div style="padding: 10px 0">
       <el-pagination
@@ -33,32 +63,7 @@
           :total="total">
       </el-pagination>
     </div>
-    <el-button
-        class="filter-item"
-        style="margin-left: 10px;"
-        type="primary"
-        icon="el-icon-edit"
-        @click="handleCreate"
-    >Create
-    </el-button>
-    <el-dialog :visible.sync="dialogFormVisible">
-      <el-form
-          label-position="top"
-          label-width="90px"
-          style="width: 600px; margin-left:50px;"
-      >
-        <el-form-item label="Warehouse No" prop="warehouseNo">
-          <el-input v-model="warehouse.warehouseNo"/>
-        </el-form-item>
-        <el-form-item label="Warehouse Name" prop="managerName">
-          <el-input v-model="warehouse.warehouseName"/>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">Quit</el-button>
-        <el-button type="primary" @click=" createData() ">Confirm</el-button>
-      </div>
-    </el-dialog>
+
   </div>
 </template>
 
@@ -80,10 +85,10 @@ export default {
     };
 
   },
+  created() {
+    this.load()
+  },
   methods: {
-    created() {
-      this.load()
-    },
     load() {
       this.request.get("/warehouse/manager/list/page?pageNum=" + this.pageNum + "&pageSize=" + this.pageSize
           + "&managerId=" + sessionStorage.getItem("managerId")).then(res => {
@@ -119,6 +124,17 @@ export default {
           this.dialogFormVisible = false
         } else {
           this.$message.error("Sorry, your input is wrong.")
+        }
+      })
+    },
+    handleDelete(warehouseNo) {
+      this.request.delete("/warehouse/" + warehouseNo).then(res => {
+        if (res.state === "SUCCESS") {
+          this.$message.success("Deleted Successfully!")
+          this.load()
+        } else {
+          this.$message.error("Error")
+          this.load()
         }
       })
     }
