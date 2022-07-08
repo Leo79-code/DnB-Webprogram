@@ -11,26 +11,46 @@
                   v-model="manager.managerPassword" placeholder="Password" autocomplete="off"></el-input>
       </el-form-item>
 
+      <el-form-item label="hCaptcha">
+        <vue-hcaptcha sitekey="762558a5-8074-4dc6-bbc0-864fcb3e9e53" @verify="onVerify"></vue-hcaptcha>
+      </el-form-item>
+
       <el-form-item>
-        <el-button type="primary" style="width: 100%;" @click="login()">Login</el-button>
+        <el-button type="primary" style="width: 100%;" @click="login()" disabled id="submit_btn">Login</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
+import VueHcaptcha from '@hcaptcha/vue-hcaptcha';
 export default {
 
   name: 'login',
+  components: { VueHcaptcha },
   data: function () {
     return {
       manager: {
         managerId: "",
         managerPassword: "",
+      // this.manager.token = token;
+      // this.manager.ekey = ekey;
       }
     }
   },
   methods: {
+    onVerify(token, ekey) {
+      this.verified = true;
+      this.token = token;
+      this.eKey = ekey;
+      console.log(`hCaptcha token: ${token}, ekey: ${ekey}`);
+      // this.manager.token = token;
+      // this.manager.ekey = ekey;
+
+      const submit_btn = document.getElementById('submit_btn');
+      submit_btn.className = "el-button el-button--primary el-button--small";
+      submit_btn.disabled = "";
+    },
     login() {
       this.request.post("/manager/login", this.manager).then(res => {
         if (res.state === "SUCCESS") {
