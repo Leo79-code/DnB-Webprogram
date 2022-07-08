@@ -8,4 +8,5 @@ public class WorkerDTO {
     private Integer managerId;
     private Integer warehouseNo;
     private boolean isEmployed;
+    private String workerName;
 }
