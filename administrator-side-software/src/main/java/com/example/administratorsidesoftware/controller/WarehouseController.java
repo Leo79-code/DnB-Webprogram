@@ -73,13 +73,13 @@ public class WarehouseController {
     public Result findWarehousePage(@RequestParam Integer pageNum,
                                     @RequestParam Integer pageSize,
                                     @RequestParam(defaultValue = "") String warehouseName,
-                                    @RequestParam(required = false)Integer warehouseId,
+                                    @RequestParam(required = false)Integer warehouseNo,
                                     @RequestParam Integer managerId) {
         IPage<Warehouse> page = new Page<>(pageNum, pageSize);
         QueryWrapper<Warehouse> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("managerId", managerId);
-        if (warehouseId != null) {
-            queryWrapper.eq("warehouseId",warehouseId);
+        if (warehouseNo != null) {
+            queryWrapper.eq("warehouseNo", warehouseNo);
             return Result.success(warehouseService.page(page,queryWrapper));
         } else if (!"".equals(warehouseName)) {
             queryWrapper.like("warehouseName", warehouseName);
