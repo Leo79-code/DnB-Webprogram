@@ -1,7 +1,5 @@
 package com.example.administratorsidesoftware.controller.DTO;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.example.administratorsidesoftware.common.GoodsType;
 import lombok.Data;
 

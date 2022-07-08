@@ -53,4 +53,15 @@ public class PositionController {
         return Result.success(positionService.page(page, queryWrapper));
     }
 
+    @GetMapping("/warehouse/{warehouseNo}/nonempty/page")
+    public Result listNonEmptyPositionPageByWarehouse(@RequestParam Integer pageNum,
+                                                   @RequestParam Integer pageSize,
+                                                   @PathVariable Integer warehouseNo) {
+        IPage<Position> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<Position> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("warehouseNo", warehouseNo);
+        queryWrapper.eq("available", false);
+        return Result.success(positionService.page(page, queryWrapper));
+    }
+
 }
