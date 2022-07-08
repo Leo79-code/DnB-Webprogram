@@ -33,8 +33,8 @@ export default {
       manager: {
         managerId: "",
         managerPassword: "",
-      // this.manager.token = token;
-      // this.manager.ekey = ekey;
+        token: "",
+        ekey: "",
       }
     }
   },
