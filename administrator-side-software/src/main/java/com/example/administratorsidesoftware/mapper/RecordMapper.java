@@ -8,5 +8,5 @@ import java.util.List;
 public interface RecordMapper extends BaseMapper<Record> {
     Record searchRecord(Integer goodsId, Integer positionNo);
 
-    List<Record> searchRecordByWarehouse(Integer warehouseId);
+    List<Record> searchRecordByWarehouse(Integer warehouseNo);
 }

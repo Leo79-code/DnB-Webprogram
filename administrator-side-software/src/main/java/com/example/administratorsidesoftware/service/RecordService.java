@@ -18,7 +18,7 @@ public class RecordService extends ServiceImpl<RecordMapper, Record> {
         return recordMapper.insert(record) ==1;
     }
 
-    public List<Record> searchRecordByWarehouse(Integer warehouseId) {
-        return recordMapper.searchRecordByWarehouse(warehouseId);
+    public List<Record> searchRecordByWarehouse(Integer warehouseNo) {
+        return recordMapper.searchRecordByWarehouse(warehouseNo);
     }
 }

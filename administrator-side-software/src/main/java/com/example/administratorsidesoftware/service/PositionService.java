@@ -98,7 +98,7 @@ public class PositionService extends ServiceImpl<PositionMapper, Position> {
         }
     }
 
-    public List<PositionDTO> listPositionPageByWarehouse(Integer warehouseNo) {
+    public List<PositionDTO> listPositionDTOByWarehouse(Integer warehouseNo) {
         List<PositionDTO> positionDTOList = new ArrayList<>();
         QueryWrapper<Position> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("warehouseNo", warehouseNo);
@@ -112,5 +112,11 @@ public class PositionService extends ServiceImpl<PositionMapper, Position> {
             positionDTOList.add(positionDTO);
         }
         return positionDTOList;
+    }
+
+    public List<Position> listPositionByWarehouse(Integer warehouseNo) {
+        QueryWrapper<Position> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("warehouseNo",warehouseNo);
+        return positionMapper.selectList(queryWrapper);
     }
 }
