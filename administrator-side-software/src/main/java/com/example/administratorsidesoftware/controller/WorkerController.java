@@ -5,16 +5,22 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.administratorsidesoftware.common.Result;
 import com.example.administratorsidesoftware.controller.DTO.WorkerDTO;
+import com.example.administratorsidesoftware.entity.Warehouse;
 import com.example.administratorsidesoftware.entity.Worker;
+import com.example.administratorsidesoftware.mapper.WarehouseMapper;
 import com.example.administratorsidesoftware.service.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("worker/")
 public class WorkerController {
     @Autowired
     private WorkerService workerService;
+    @Resource
+    private WarehouseMapper warehouseMapper;
 
     /**
      * Paging shows all workers in a warehouse
@@ -62,6 +68,10 @@ public class WorkerController {
      */
     @PostMapping("/change")
     public Result saveOrUpdateWorker(@RequestBody WorkerDTO workerDTO) {
+        Warehouse warehouse = warehouseMapper.selectById(workerDTO.getWarehouseNo());
+        if(warehouse == null){
+            return Result.error("user error",false);
+        }
         boolean result = workerService.saveOrUpdateWorker(workerDTO);
         if (result) {
             return Result.success(true);
