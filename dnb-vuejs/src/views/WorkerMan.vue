@@ -81,9 +81,14 @@
           label-width="70px"
           style="width: 250px; margin-left:50px;"
       >
-        <el-form-item label="New Warehouse No" prop="warehouseNo">
-          <el-input v-model="workerUpdate.warehouseNo"/>
-        </el-form-item>
+        <el-select v-model="value2" @change clearable placeholder="Select Warehouse">
+          <el-option
+              v-for="item in options"
+              :key="item.warehouseNo"
+              :label="item.warehouseNo"
+              :value="item.warehouseNo">
+          </el-option>
+        </el-select>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible2 = false">Quit</el-button>
@@ -125,6 +130,7 @@ export default {
       tableData: [],
       options: [],
       value: "",
+      value2: "",
       total: 0,
       pageNum: 1,
       pageSize: 5,
@@ -190,6 +196,7 @@ export default {
         workerName: workerName
       }
       this.dialogFormVisible2 = true;
+      this.getWarehouse();
     },
     async createData() {
       this.worker.managerId = sessionStorage.getItem('managerId')
@@ -205,6 +212,7 @@ export default {
       })
     },
     async updateWorker() {
+      this.workerUpdate.warehouseNo = this.value2
       this.request.post("/worker/change", this.workerUpdate).then(res => {
         if (res.state === "SUCCESS") {
           this.$message.success("Updated Successfully!")

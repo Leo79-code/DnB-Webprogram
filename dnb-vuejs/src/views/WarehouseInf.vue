@@ -22,7 +22,7 @@
           :disabled="Disabled"
           class="filter-item"
           style="margin-left: 10px;"
-          type="warning"
+          type="danger"
           icon="el-icon-delete"
           @click='handleDelete()'
       >Delete Goods
@@ -79,7 +79,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible2 = false">Quit</el-button>
-        <el-button type="warning" @click=" deleteGoods() ">Delete</el-button>
+        <el-button type="danger" @click=" deleteGoods() ">Delete</el-button>
       </div>
     </el-dialog>
 
