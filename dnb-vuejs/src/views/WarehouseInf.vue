@@ -34,9 +34,6 @@
           label-width="70px"
           style="width: 250px; margin-left:50px;"
       >
-<!--        <el-form-item label="Goods ID" prop="goodsId">
-          <el-input v-model="goods.goodsId"/>
-        </el-form-item>-->
         <el-form-item label="Goods Color" prop="color">
           <el-select v-model="colorSel" clearable placeholder="Select PositionNo">
             <el-option
@@ -69,8 +66,15 @@
           label-width="70px"
           style="width: 250px; margin-left:50px;"
       >
-        <el-form-item label="Goods ID" prop="toDelGoodsId">
-          <el-input v-model="toDelGoodsId"/>
+        <el-form-item label="Goods ID" prop="toDel">
+          <el-select v-model="toDelGoodsId" clearable placeholder="Select Goods ID">
+            <el-option
+                v-for="goods in deleteOptions"
+                :key="goods.goodsId"
+                :label="goods.goodsId"
+                :value="goods.goodsId">
+            </el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -78,6 +82,7 @@
         <el-button type="warning" @click=" deleteGoods() ">Delete</el-button>
       </div>
     </el-dialog>
+
     <el-row>
       <el-col :span="12">
         <el-table
@@ -158,12 +163,14 @@ export default {
           value: 'blue',
           label: 'Blue'
         }],
+      deleteOptions: [],
       tableData: [],
       total: 0,
       pageNum: 1,
       pageSize: 5,
       dialogFormVisible1: false,
       dialogFormVisible2: false,
+      dialogFormVisible3: false,
       value: "",
       positionSel: "",
       colorSel: "",
@@ -267,7 +274,7 @@ export default {
       this.dialogFormVisible1 = true;
     },
     handleDelete() {
-      this.toDelGoodsId = ""
+      this.deleteOptions = this.tableData
       this.dialogFormVisible2 = true;
     },
     //Create Button Confirm

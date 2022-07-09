@@ -9,11 +9,10 @@ import ElementUI from 'element-ui'
 import './assets/global.css'
 import 'element-ui/lib/theme-chalk/index.css';
 
-// Vue.use(cookie)
+
 Vue.use(ElementUI, {size: "small"});
 Vue.config.productionTip = false
 Vue.prototype.request=request
-// Vue.prototype.$cookie=cookie
 
 new Vue({
   router,
