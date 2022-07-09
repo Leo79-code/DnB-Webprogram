@@ -2,14 +2,16 @@ package com.example.administratorsidesoftware.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.example.administratorsidesoftware.common.Result;
+import com.example.administratorsidesoftware.controller.DTO.CaptchaDTO;
 import com.example.administratorsidesoftware.controller.DTO.ManagerDTO;
 import com.example.administratorsidesoftware.entity.Manager;
 import com.example.administratorsidesoftware.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.http.*;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 
 
@@ -27,13 +29,35 @@ public class ManagerController {
      */
     @PostMapping("/login")
     public Result login(@RequestBody ManagerDTO managerDTO) {
+        String token = managerDTO.getToken();
+        String auth_url = "https://hcaptcha.com/siteverify";
+        String secret = "0x2598A9B7D33c4cd7AafDdCf94d651b4b0f90AFf1";
+        MultiValueMap params = new LinkedMultiValueMap<>();
+        params.add("secret", secret);
+        params.add("response", token);
+
+        RestTemplate client = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        HttpMethod conn_method = HttpMethod.POST;
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        HttpEntity<MultiValueMap<String, String>> req_entity = new HttpEntity<>(params, headers);
+        ResponseEntity<CaptchaDTO> res_entity = client.exchange(
+                auth_url,
+                conn_method,
+                req_entity,
+                CaptchaDTO.class
+        );
+        CaptchaDTO ans = res_entity.getBody();
+        Boolean is_verified_captcha = ans.success;
+        System.out.println("Captcha verification status: " + is_verified_captcha.toString());
+
         Integer id = managerDTO.getManagerId();
         String password = managerDTO.getManagerPassword();
         if (id == null || StrUtil.isBlank(password)) {
             return Result.error("The input is empty");
         }
         Manager login = managerService.login(managerDTO);
-        if (login != null) {
+        if (login != null && is_verified_captcha) {
             return Result.success(login);
         } else {
             return Result.error("Input error");

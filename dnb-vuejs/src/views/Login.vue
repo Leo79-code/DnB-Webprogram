@@ -12,7 +12,7 @@
       </el-form-item>
 
       <el-form-item label="hCaptcha">
-        <vue-hcaptcha sitekey="762558a5-8074-4dc6-bbc0-864fcb3e9e53" @verify="onVerify"></vue-hcaptcha>
+        <vue-hcaptcha sitekey="b6ed4f4a-93b1-453f-b411-cdeaa3358ead" @verify="onVerify"></vue-hcaptcha>
       </el-form-item>
 
       <el-form-item>
@@ -34,18 +34,13 @@ export default {
         managerId: "",
         managerPassword: "",
         token: "",
-        ekey: "",
       }
     }
   },
   methods: {
     onVerify(token, ekey) {
-      this.verified = true;
-      this.token = token;
-      this.eKey = ekey;
       console.log(`hCaptcha token: ${token}, ekey: ${ekey}`);
-      // this.manager.token = token;
-      // this.manager.ekey = ekey;
+      this.manager.token = token;
 
       const submit_btn = document.getElementById('submit_btn');
       submit_btn.className = "el-button el-button--primary el-button--small";
