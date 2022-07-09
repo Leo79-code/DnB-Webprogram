@@ -34,18 +34,13 @@ export default {
         managerId: "",
         managerPassword: "",
         token: "",
-        ekey: "",
       }
     }
   },
   methods: {
     onVerify(token, ekey) {
-      this.verified = true;
-      this.token = token;
-      this.eKey = ekey;
       console.log(`hCaptcha token: ${token}, ekey: ${ekey}`);
       this.manager.token = token;
-      this.manager.ekey = ekey;
 
       const submit_btn = document.getElementById('submit_btn');
       submit_btn.className = "el-button el-button--primary el-button--small";
