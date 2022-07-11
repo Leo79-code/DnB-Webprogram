@@ -24,7 +24,7 @@ public class ManagerController {
     /**
      * Login interface, provides login function to front-end
      *
-     * @param managerDTO manager data transfer object
+     * @param managerDTO manager data transfer object，需要传入managerId，managerPassword，token
      * @return true if the user is valid, false if the user isn't valid.
      */
     @PostMapping("/login")
@@ -65,7 +65,7 @@ public class ManagerController {
     }
 
     /**
-     * 修改manager信息（逻辑上不能改managerId，前端将默认Id传进DTO中）
+     * 修改manager信息
      * @param managerDTO 需要更改的信息+managerId
      * @return 成功返回SUCCESS，失败返回BUSINESS_ERROR
      */
@@ -79,6 +79,11 @@ public class ManagerController {
         }
     }
 
+    /**
+     * 注册manager
+     * @param managerDTO 需要传入managerName，managerPassword
+     * @return 成功返回SUCCESS，失败返回BUSINESS_ERROR
+     */
     @PostMapping("/regist")
     public Result regist(@RequestBody ManagerDTO managerDTO){
         boolean result = managerService.managerRegist(managerDTO);

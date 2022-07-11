@@ -42,6 +42,13 @@ public class PositionController {
         return Result.success(page);
     }
 
+    /**
+     * 分页显示所有空的position
+     * @param pageNum 当前页数
+     * @param pageSize 页容量
+     * @param warehouseNo 要查询的warehouse的warehouseNo
+     * @return 当前页需要显示的position
+     */
     @GetMapping("/warehouse/{warehouseNo}/empty/page")
     public Result listEmptyPositionPageByWarehouse(@RequestParam Integer pageNum,
                                                    @RequestParam Integer pageSize,

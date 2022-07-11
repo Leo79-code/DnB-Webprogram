@@ -41,7 +41,7 @@ public class GoodsController {
     /**
      * 只改变goods位置, 会同步更新position
      *
-     * @param goodsDTO goods data transfer object goodsId, 更改到的位置，操作的managerId
+     * @param goodsDTO goods data transfer object 需要goodsId, 更改到的位置，执行操作的managerId
      * @return 更改成功返回success，失败返回user_error
      */
     @PostMapping("/change/position")
@@ -57,7 +57,7 @@ public class GoodsController {
     /**
      * 改变货物的状态信息，目前只有颜色状态，若后期扩充字段在这里更改
      *
-     * @param goodsDTO 需要更改的信息封装到goodsDTO中
+     * @param goodsDTO 需要更改的信息封装到goodsDTO中，必须带有goodsId
      * @return 更改成功返回success，更改失败返回user_error
      */
     @PostMapping("/change/color")

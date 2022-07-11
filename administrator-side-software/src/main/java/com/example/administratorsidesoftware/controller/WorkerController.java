@@ -46,7 +46,7 @@ public class WorkerController {
      *
      * @param pageNum  The sequence number of the page displayed
      * @param pageSize Maximum number of items that can be displayed per page
-     * @param managerId
+     * @param managerId managerId of user
      * @return The information contained in the current page that should be displayed
      */
     @GetMapping("/manager/list/page")
@@ -63,8 +63,8 @@ public class WorkerController {
     /**
      * Change the state of the worker or add worker.
      *
-     * @param workerDTO worker data transfer object. 禁止manager更改worker password
-     * @return
+     * @param workerDTO worker data transfer object. 需要更改的信息，workerName，warehouseNo等
+     * @return 成功返回SUCCESS，失败返回BUSINESS_ERROR
      */
     @PostMapping("/change")
     public Result saveOrUpdateWorker(@RequestBody WorkerDTO workerDTO) {
@@ -96,6 +96,15 @@ public class WorkerController {
         }
     }
 
+    /**
+     * 分页查找worker
+     * @param pageNum 当前页
+     * @param pageSize 页容量
+     * @param workerName workerName，可以不输入
+     * @param workerId workerId，可以不输入
+     * @param managerId 用户的managerId，必须输入，进行权限检验
+     * @return 返回查询结果，输入warehouseNo则为精确查找，输入warehouseName为模糊查找。都不输入时报错
+     */
     @GetMapping("/find/page")
     public Result findWorkerPage(@RequestParam Integer pageNum,
                                  @RequestParam Integer pageSize,

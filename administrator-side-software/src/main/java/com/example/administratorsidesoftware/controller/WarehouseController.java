@@ -69,6 +69,15 @@ public class WarehouseController {
         return Result.success(warehouseService.page(page, queryWrapper));
     }
 
+    /**
+     * 分页查找warehouse
+     * @param pageNum 当前页码
+     * @param pageSize 页容量
+     * @param warehouseName warehouseName，可以不输入
+     * @param warehouseNo warehouseNo，可以不输入
+     * @param managerId managerId，必须输入，检验权限
+     * @return 返回查询结果，输入warehouseNo则为精确查找，输入warehouseName为模糊查找。都不输入时报错
+     */
     @GetMapping("/find/page")
     public Result findWarehousePage(@RequestParam Integer pageNum,
                                     @RequestParam Integer pageSize,

@@ -28,8 +28,6 @@ public class EchartsController {
     @Resource
     private PositionService positionService;
 
-//    //TODO 每个货架的利用率（本年度起算）
-
     /**
      * 饼状图，显示某warehouse内position占用具体情况，会显示若position被占用是哪种货物占用的
      *
