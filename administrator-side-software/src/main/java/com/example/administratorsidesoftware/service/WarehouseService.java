@@ -20,6 +20,11 @@ public class WarehouseService extends ServiceImpl<WarehouseMapper, Warehouse> {
     @Resource
     private PositionService positionService;
 
+    /**
+     * 找不到workerId时创建worker，找得到时更新worker
+     * @param warehouseDTO 更新时传入warehouseNo和要更新的信息，创建时不用传入warehouseNo
+     * @return 成功返回true，失败返回false
+     */
     public boolean saveOrUpdateWarehouse(WarehouseDTO warehouseDTO) {
         Warehouse warehouse = new Warehouse();
         BeanUtil.copyProperties(warehouseDTO, warehouse);
@@ -34,6 +39,11 @@ public class WarehouseService extends ServiceImpl<WarehouseMapper, Warehouse> {
         }
     }
 
+    /**
+     * 删除warehouse
+     * @param warehouseNo 要删除的warehouseNo
+     * @return 删除成功返回true，失败返回false
+     */
     public boolean removeWarehouse(Integer warehouseNo) {
 
         List<Position> positions = positionService.listNonEmptyPositionByWarehouse(warehouseNo);

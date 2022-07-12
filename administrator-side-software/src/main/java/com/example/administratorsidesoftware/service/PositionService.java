@@ -36,7 +36,11 @@ public class PositionService extends ServiceImpl<PositionMapper, Position> {
     @Resource
     private RecordMapper recordMapper;
 
-
+    /**
+     * 将goods放入position，创建record
+     * @param goodsDTO goodsId，positionNo，managerId
+     * @return 放入成功true，失败false
+     */
     public boolean putin(GoodsDTO goodsDTO) {
         //goodsDTO中position是要放入的地方
         Position position = positionMapper.selectById(goodsDTO.getPositionNo());
@@ -51,6 +55,11 @@ public class PositionService extends ServiceImpl<PositionMapper, Position> {
         }
     }
 
+    /**
+     * 从position中拿出goods，并更新record
+     * @param goodsDTO goodsId，positionNo
+     * @return 拿出成功true，失败false
+     */
     public boolean takeout(GoodsDTO goodsDTO) {
         //goodsDTO中positionNo是要放入的地方
         Goods goods = goodsMapper.selectById(goodsDTO.getGoodsId());
@@ -67,7 +76,11 @@ public class PositionService extends ServiceImpl<PositionMapper, Position> {
         }
     }
 
-
+    /**
+     * 创建warehouse时自动创建默认数量个position
+     * @param warehouse 创建的warehouse，warehouseNo
+     * @return 创建成功true，失败false
+     */
     public boolean saveWarehouse(Warehouse warehouse) {
         boolean result = true;
         for (int i = 0; i < Constant.DEFAULT_POSITION_NUM; i++) {
@@ -79,6 +92,11 @@ public class PositionService extends ServiceImpl<PositionMapper, Position> {
         return result;
     }
 
+    /**
+     * 删除warehouse时删除所有它的position
+     * @param warehouseNo 要删除的warehouseNo
+     * @return 删除成功true，失败false
+     */
     public boolean removeWarehouse(Integer warehouseNo) {
         boolean result = true;
         QueryWrapper<Position> queryWrapper = new QueryWrapper<>();
@@ -90,6 +108,11 @@ public class PositionService extends ServiceImpl<PositionMapper, Position> {
         return result;
     }
 
+    /**
+     * 删除某个position
+     * @param position available，positionNo
+     * @return 删除成功true，失败false
+     */
     private boolean deletePosition(Position position) {
         if (position.isAvailable()) {
             return removeById(position);
@@ -98,6 +121,11 @@ public class PositionService extends ServiceImpl<PositionMapper, Position> {
         }
     }
 
+    /**
+     * 查询某warehouse的goods+position信息
+     * @param warehouseNo 要查询的warehouse的warehouseNo
+     * @return 返回的list中包含每个position的positionNo，available；如果有goods则还会返回goodsId，color
+     */
     public List<PositionDTO> listPositionDTOByWarehouse(Integer warehouseNo) {
         List<PositionDTO> positionDTOList = new ArrayList<>();
         QueryWrapper<Position> queryWrapper = new QueryWrapper<>();
@@ -118,12 +146,22 @@ public class PositionService extends ServiceImpl<PositionMapper, Position> {
         return positionDTOList;
     }
 
+    /**
+     * 找到某个warehouse的所有position
+     * @param warehouseNo 待查找的warehouse的warehouseNo
+     * @return list中包含该warehouse的全部position信息，包括positionNo，available
+     */
     public List<Position> listPositionByWarehouse(Integer warehouseNo) {
         QueryWrapper<Position> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("warehouseNo",warehouseNo);
         return positionMapper.selectList(queryWrapper);
     }
 
+    /**
+     * 找到某个warehouse所有非空position
+     * @param warehouseNo 待查找的warehouse的warehouseNo
+     * @return list中包含全部非空position
+     */
     public List<Position> listNonEmptyPositionByWarehouse(Integer warehouseNo) {
         QueryWrapper<Position> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("warehouseNo",warehouseNo);
