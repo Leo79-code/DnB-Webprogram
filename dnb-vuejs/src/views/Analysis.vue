@@ -17,7 +17,6 @@
       <el-col :span="12">
         <div id="line2" style="width: 700px; height: 600px"></div>
       </el-col>
-
     </el-row>
   </div>
 </template>

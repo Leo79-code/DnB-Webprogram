@@ -1,5 +1,7 @@
 package com.example.administratorsidesoftware.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.administratorsidesoftware.common.GoodsType;
@@ -121,5 +123,24 @@ public class GoodsController {
                                 @RequestParam Integer managerId) {
         IPage<Goods> page = new Page<>(pageNum, pageSize);
         return Result.success(goodsService.findGoodsPage(page, goodsId, color, managerId));
+    }
+
+    @GetMapping("/changegoodscolor")
+    public void changeGoodsColor(@RequestParam Integer goodsId,
+                                 @RequestParam GoodsType targetColor
+
+    ) {
+//        QueryWrapper<Goods> goodsQueryWrapper = new QueryWrapper<>();
+//        goodsQueryWrapper.eq("goodsId", goodsId);
+//        Goods goods = goodsService.getOne(goodsQueryWrapper);
+
+        UpdateWrapper<Goods> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("goodsId", goodsId);
+        updateWrapper.set("color", targetColor);
+        goodsService.update(null, updateWrapper);
+
+//        System.out.println(goods.getGoodsId());
+//        System.out.println("Original color: " + goods.getColor());
+//        System.out.println("Target color: " + targetColor);
     }
 }

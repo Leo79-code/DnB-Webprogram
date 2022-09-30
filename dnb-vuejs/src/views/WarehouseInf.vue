@@ -87,7 +87,7 @@
       <el-col :span="12">
         <el-table
             :data="tableData"
-            height="550"
+            height="603"
             stripe
             style="width: 100%">
           <el-table-column
@@ -110,10 +110,13 @@
               label="Color"
               width="180">
           </el-table-column>
+          <div slot="empty" style="text-align: left;">
+            <el-empty description="Opps! Please select a warehouse ⬆️" />
+          </div>
         </el-table>
       </el-col>
       <el-col :span="12">
-        <div id="main" style="width: 800px; height: 600px"></div>
+        <div id="main" style="width: 800px"></div>
       </el-col>
     </el-row>
     <div style="padding: 10px 0">

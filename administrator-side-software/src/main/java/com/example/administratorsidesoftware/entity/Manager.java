@@ -15,4 +15,12 @@ public class Manager {
     private String managerPassword;
     @TableField(value = "managerName")
     private String managerName;
+    @TableField(value = "managerEmail")
+    private String managerEmail;
+    @TableField(value = "managerMobile")
+    private String managerMobile;
+
+
+    //@TableField(value = "avatar_url")
+    private String avatar_url;
 }

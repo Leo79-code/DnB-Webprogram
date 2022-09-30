@@ -1,7 +1,11 @@
 package com.example.administratorsidesoftware.controller;
 
+import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
+
 import cn.hutool.core.util.StrUtil;
 import com.example.administratorsidesoftware.common.Result;
+import com.example.administratorsidesoftware.common.State;
 import com.example.administratorsidesoftware.controller.DTO.CaptchaDTO;
 import com.example.administratorsidesoftware.controller.DTO.ManagerDTO;
 import com.example.administratorsidesoftware.entity.Manager;
@@ -86,6 +90,28 @@ public class ManagerController {
             return Result.success();
         }else {
             return Result.error();
+        }
+    }
+
+    @PostMapping("/register")
+    public Result register(@RequestBody Map<String, String> requestParams) {
+        ManagerDTO managerDTO = new ManagerDTO();
+
+        Integer id = ThreadLocalRandom.current().nextInt(100000, 100000001);
+        managerDTO.setManagerId(id);
+        managerDTO.setManagerMobile("");
+        managerDTO.setManagerEmail(requestParams.get("email"));
+        managerDTO.setManagerName(requestParams.get("name"));
+        managerDTO.setManagerPassword(requestParams.get("password"));
+        boolean result = managerService.managerRegist(managerDTO);
+        if (result) {
+            Result res = new Result();
+            res.setState(State.SUCCESS);
+            res.setMsg(id.toString());
+            res.setData(null);
+            return res;
+        } else {
+            return Result.error("Register failed!");
         }
     }
 }

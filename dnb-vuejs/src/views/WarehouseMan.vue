@@ -24,7 +24,7 @@
     </el-dialog>
     <el-table
         :data="tableData"
-        height="550"
+        height="603"
         stripe
         style="width: 100%">
       <el-table-column
@@ -56,6 +56,9 @@
           </el-button>
         </template>
       </el-table-column>
+      <div slot="empty" style="text-align: left;">
+        <el-empty description="Loading……" />
+     </div>
     </el-table>
     <div style="padding: 10px 0">
       <el-pagination

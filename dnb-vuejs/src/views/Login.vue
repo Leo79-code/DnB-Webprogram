@@ -3,30 +3,61 @@
     <el-form class="login-container">
       <h1 class="title">Warehouse Manage System</h1>
       <el-form-item label="Account">
-        <el-input size="medium" prefix-icon="el-icon-user" v-model="manager.managerId"
-                  placeholder="Account" autocomplete="off"></el-input>
+        <el-input
+          size="medium"
+          prefix-icon="el-icon-user"
+          v-model="manager.managerId"
+          placeholder="Account"
+          autocomplete="off"
+        ></el-input>
       </el-form-item>
       <el-form-item label="Password">
-        <el-input size="medium" prefix-icon="el-icon-lock" type="password" show-password
-                  v-model="manager.managerPassword" placeholder="Password" autocomplete="off"></el-input>
+        <el-input
+          size="medium"
+          prefix-icon="el-icon-lock"
+          type="password"
+          show-password
+          v-model="manager.managerPassword"
+          placeholder="Password"
+          autocomplete="off"
+        ></el-input>
       </el-form-item>
 
       <el-form-item label="hCaptcha">
-        <vue-hcaptcha sitekey="b6ed4f4a-93b1-453f-b411-cdeaa3358ead" @verify="onVerify"></vue-hcaptcha>
+        <vue-hcaptcha
+          sitekey="b6ed4f4a-93b1-453f-b411-cdeaa3358ead"
+          @verify="onVerify"
+        ></vue-hcaptcha>
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" style="width: 100%;" @click="login()" disabled id="submit_btn">Login</el-button>
+        <el-button
+          type="primary"
+          style="width: 100%"
+          @click="login()"
+          disabled
+          id="submit_btn"
+          >Login</el-button
+        >
+      </el-form-item>
+      <el-form-item
+        ><el-button
+          type="warning"
+          style="width: 100%"
+          @click="$router.push('register')"
+          >Register</el-button
+        >
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
-import VueHcaptcha from '@hcaptcha/vue-hcaptcha';
-export default {
+import md5 from "js-md5";
+import VueHcaptcha from "@hcaptcha/vue-hcaptcha";
 
-  name: 'login',
+export default {
+  name: "login",
   components: { VueHcaptcha },
   data: function () {
     return {
@@ -34,32 +65,44 @@ export default {
         managerId: "",
         managerPassword: "",
         token: "",
-      }
-    }
+      },
+    };
   },
   methods: {
     onVerify(token, ekey) {
       console.log(`hCaptcha token: ${token}, ekey: ${ekey}`);
       this.manager.token = token;
 
-      const submit_btn = document.getElementById('submit_btn');
+      const submit_btn = document.getElementById("submit_btn");
       submit_btn.className = "el-button el-button--primary el-button--small";
       submit_btn.disabled = "";
     },
     login() {
-      this.request.post("/manager/login", this.manager).then(res => {
+      this.request.post("/manager/login", this.manager).then((res) => {
         if (res.state === "SUCCESS") {
           // this.$cookie.set('JSESSIONID',res.data)
-          sessionStorage.setItem("managerName",res.data.managerName);
-          sessionStorage.setItem("managerId",res.data.managerId);
-          this.$router.push("/manage")
+          sessionStorage.setItem("managerName", res.data.managerName);
+          sessionStorage.setItem("managerId", res.data.managerId);
+          sessionStorage.setItem("managerEmail", res.data.managerEmail);
+
+          console.log(
+            "Email hash: " + md5.hex(sessionStorage.managerEmail.toString())
+          );
+          sessionStorage.setItem(
+            "managerEmailHash",
+            md5.hex(sessionStorage.managerEmail.toString()).toString()
+          );
+
+          this.$router.push("/manage");
         } else {
-          this.$message.error("Sorry, your account and password did not match.")
+          this.$message.error(
+            "Sorry, your account and password did not match."
+          );
         }
-      })
-    }
-  }
-}
+      });
+    },
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

@@ -44,8 +44,8 @@ public class WorkerController {
     /**
      * Paging shows all workers managed by current manager
      *
-     * @param pageNum  The sequence number of the page displayed
-     * @param pageSize Maximum number of items that can be displayed per page
+     * @param pageNum   The sequence number of the page displayed
+     * @param pageSize  Maximum number of items that can be displayed per page
      * @param managerId
      * @return The information contained in the current page that should be displayed
      */
@@ -69,8 +69,8 @@ public class WorkerController {
     @PostMapping("/change")
     public Result saveOrUpdateWorker(@RequestBody WorkerDTO workerDTO) {
         Warehouse warehouse = warehouseMapper.selectById(workerDTO.getWarehouseNo());
-        if(warehouse == null){
-            return Result.error("user error",false);
+        if (warehouse == null) {
+            return Result.error("user error", false);
         }
         boolean result = workerService.saveOrUpdateWorker(workerDTO);
         if (result) {
@@ -104,16 +104,28 @@ public class WorkerController {
                                  @RequestParam Integer managerId) {
         IPage<Worker> page = new Page<>(pageNum, pageSize);
         QueryWrapper<Worker> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("managerId",managerId);
-        queryWrapper.eq("isEmployed",true);
-        if(workerId != null){
-            queryWrapper.eq("workerId",workerId);
-            return Result.success(workerService.page(page,queryWrapper));
-        }else if(!"".equals(workerName)){
-            queryWrapper.like("workerName",workerName);
-            return Result.success(workerService.page(page,queryWrapper));
-        }else {
+        queryWrapper.eq("managerId", managerId);
+        queryWrapper.eq("isEmployed", true);
+        if (workerId != null) {
+            queryWrapper.eq("workerId", workerId);
+            return Result.success(workerService.page(page, queryWrapper));
+        } else if (!"".equals(workerName)) {
+            queryWrapper.like("workerName", workerName);
+            return Result.success(workerService.page(page, queryWrapper));
+        } else {
             return Result.error("empty input");
         }
+    }
+
+    @GetMapping("/searchworkerbyname")
+    public Result searchWorkerByName(@RequestParam String name,
+                                     @RequestParam Integer pageNum,
+                                     @RequestParam Integer pageSize
+    ) {
+        IPage<Worker> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<Worker> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("isEmployed", true);
+        queryWrapper.like("workerName", name);
+        return Result.success(workerService.page(page, queryWrapper));
     }
 }
