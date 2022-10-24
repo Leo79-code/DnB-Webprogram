@@ -116,7 +116,7 @@
         </el-table>
       </el-col>
       <el-col :span="12">
-        <div id="main" style="width: 800px"></div>
+        <div id="main" style="width: 800px; height: 600px"></div>
       </el-col>
     </el-row>
     <div style="padding: 10px 0">

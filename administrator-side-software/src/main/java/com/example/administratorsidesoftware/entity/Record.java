@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.example.administratorsidesoftware.common.GoodsType;
 import com.example.administratorsidesoftware.mapper.RecordMapper;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,16 @@ public class Record {
     private Timestamp takeoutTime;
     @TableField(value = "depositTime")
     private Timestamp depositTime;
+    @TableField(value = "warehouseNo")
+    private Integer warehouseNo;
+    @TableField(value = "color")
+    private GoodsType color;
 
-    public Record(Integer positionNo, Integer goodsId) {
+    public Record(Integer positionNo, Integer goodsId, GoodsType color, Integer warehouseNo) {
         this.setGoodsId(goodsId);
         this.setPositionNo(positionNo);
+        this.setColor(color);
+        this.setWarehouseNo(warehouseNo);
         Date date = new Date();
         Timestamp timestamp = new Timestamp(date.getTime());
         this.setDepositTime(timestamp);

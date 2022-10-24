@@ -44,7 +44,7 @@ public class PositionService extends ServiceImpl<PositionMapper, Position> {
         if (position.isAvailable() &&
                 (managerMapper.getPositionManager(position.getPositionNo()).getManagerId().equals(goodsDTO.getManagerId()))) {
             position.setAvailable(false);
-            recordService.saveNewRecord(goodsDTO.getPositionNo(), goodsDTO.getGoodsId());
+            recordService.saveNewRecord(goodsDTO.getPositionNo(), goodsDTO.getGoodsId(), goodsDTO.getColor(), position.getWarehouseNo());
             return updateById(position);
         } else {
             return false;

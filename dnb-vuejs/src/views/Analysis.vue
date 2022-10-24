@@ -47,7 +47,7 @@ export default {
 
       option1 = {
         title: {
-          text: this.value + '号仓库季度入库记录'
+          text: 'No. ' + this.value + ' Warehouse quarterly deposit records'
         },
         xAxis: {
           type: 'category',
@@ -66,7 +66,7 @@ export default {
 
       option2 = {
         title: {
-          text: this.value + '号仓库季度出库记录'
+          text: 'No. ' +this.value + ' Warehouse quarterly outbound records'
         },
         xAxis: {
           type: 'category',
